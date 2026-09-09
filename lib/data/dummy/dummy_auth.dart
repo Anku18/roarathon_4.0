@@ -4,6 +4,11 @@ import '../../models/models.dart';
 abstract final class DummyAuth {
   static const accounts = <DummyAccount>[
     DummyAccount(clientId: 'RM4K92', password: 'demo123', seedId: 'rohit'),
+    DummyAccount(
+      clientId: 'RM6551',
+      password: 'demo123',
+      seedId: 'Praathamesh',
+    ),
   ];
 
   static const hint = 'Demo login · RM4K92 / demo123';

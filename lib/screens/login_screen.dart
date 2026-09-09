@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _busy = false;
       if (!ok) {
-        _error = "That client ID or password doesn't match the dummy accounts.";
+        _error = "Your Client ID or Password does not match our records.";
       }
     });
   }
@@ -69,18 +69,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 28),
-            Text(
-              'Sharekhan',
-              style: AppTheme.font(
-                size: 18,
-                weight: FontWeight.w800,
-                letterSpacing: -0.4,
-              ),
-            ),
+            // const SizedBox(height: 28),
+            // Text(
+            //   'Investo',
+            //   style: AppTheme.font(
+            //     size: 18,
+            //     weight: FontWeight.w800,
+            //     letterSpacing: -0.4,
+            //   ),
+            // ),
             const SizedBox(height: 8),
             Text(
-              'Rewards prototype',
+              'Investo',
               style: AppTheme.font(
                 size: 32,
                 weight: FontWeight.w800,
@@ -90,8 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              'Sign in with a dummy client ID. Nothing here talks to a live broker.',
-              style: AppTheme.font(size: 14, color: AppColors.mute, height: 1.4),
+              'Sign in to your trading account',
+              style: AppTheme.font(
+                size: 14,
+                color: AppColors.mute,
+                height: 1.4,
+              ),
             ),
             const SizedBox(height: 28),
             _Field(
@@ -111,7 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
               suffix: IconButton(
                 onPressed: () => setState(() => _obscure = !_obscure),
                 icon: Icon(
-                  _obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                  _obscure
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
                   color: AppColors.mute,
                   size: 20,
                 ),
@@ -121,7 +127,11 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 14),
               Text(
                 _error!,
-                style: AppTheme.font(size: 13, color: AppColors.deep, height: 1.4),
+                style: AppTheme.font(
+                  size: 13,
+                  color: AppColors.deep,
+                  height: 1.4,
+                ),
               ),
             ],
             const SizedBox(height: 22),
@@ -130,11 +140,11 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: _busy ? null : _submit,
               height: 56,
             ),
-            const SizedBox(height: 18),
-            Text(
-              DummyAuth.hint,
-              style: AppTheme.font(size: 12.5, color: AppColors.mute),
-            ),
+            // const SizedBox(height: 18),
+            // Text(
+            //   DummyAuth.hint,
+            //   style: AppTheme.font(size: 12.5, color: AppColors.mute),
+            // ),
           ],
         ),
       ),
@@ -189,7 +199,10 @@ class _Field extends StatelessWidget {
             filled: true,
             fillColor: AppColors.cream,
             suffixIcon: suffix,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadii.card),
               borderSide: const BorderSide(color: AppColors.lineStrong),
