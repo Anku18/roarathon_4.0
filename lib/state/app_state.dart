@@ -1,0 +1,141 @@
+import 'package:flutter/foundation.dart';
+
+import '../data/dummy/dummy.dart';
+import '../models/models.dart';
+import 'session_store.dart';
+
+enum LeaderboardTab { referrals, accuracy }
+
+class AppState extends ChangeNotifier {
+  AppState({required SessionStore store}) : _store = store;
+
+  final SessionStore _store;
+
+  DummySeed? _seed;
+  bool _ready = false;
+
+  int ticks = 0;
+  int streak = 0;
+  bool claimedToday = false;
+  List<bool> missionsDone = const [];
+  String? prediction; // UP | DOWN
+  final List<String> shopDone = [];
+  LeaderboardTab leaderboardTab = LeaderboardTab.referrals;
+  final List<ChatTurn> chat = [];
+
+  DummySeed get seed {
+    final s = _seed;
+    if (s == null) {
+      throw StateError('AppState used before a user was loaded');
+    }
+    return s;
+  }
+
+  UserProfile? get profile => _seed?.profile;
+  bool get isLoggedIn => _seed != null;
+  bool get ready => _ready;
+
+  Future<void> restore() async {
+    final clientId = await _store.loadClientId();
+    if (clientId != null) {
+      final account = DummyAuth.byClientId(clientId);
+      if (account != null) {
+        _applySeed(DummySeeds.byId(account.seedId));
+      }
+    }
+    _ready = true;
+    notifyListeners();
+  }
+
+  Future<bool> login(String clientId, String password) async {
+    final account = DummyAuth.match(clientId, password);
+    if (account == null) return false;
+    _applySeed(DummySeeds.byId(account.seedId));
+    await _store.saveClientId(account.clientId);
+    notifyListeners();
+    return true;
+  }
+
+  Future<void> logout() async {
+    _seed = null;
+    ticks = 0;
+    streak = 0;
+    claimedToday = false;
+    missionsDone = const [];
+    prediction = null;
+    shopDone.clear();
+    leaderboardTab = LeaderboardTab.referrals;
+    chat.clear();
+    await _store.clear();
+    notifyListeners();
+  }
+
+  void _applySeed(DummySeed seed) {
+    _seed = seed;
+    ticks = seed.ticks;
+    streak = seed.streak;
+    claimedToday = seed.claimedToday;
+    missionsDone = seed.missions.map((m) => m.doneByDefault).toList();
+    prediction = null;
+    shopDone.clear();
+    leaderboardTab = LeaderboardTab.referrals;
+    chat
+      ..clear()
+      ..add(ChatTurn(fromUser: false, text: seed.chatGreeting));
+  }
+
+  void pickCall(String direction) {
+    if (prediction != null) return;
+    prediction = direction;
+    notifyListeners();
+  }
+
+  void toggleMission(int index) {
+    if (index < 0 || index >= missionsDone.length) return;
+    final was = missionsDone[index];
+    missionsDone = List.of(missionsDone)..[index] = !was;
+    final pts = seed.missions[index].points;
+    ticks += was ? -pts : pts;
+    notifyListeners();
+  }
+
+  void checkIn() {
+    if (claimedToday) return;
+    claimedToday = true;
+    streak += 1;
+    ticks += seed.checkInCoins;
+    notifyListeners();
+  }
+
+  void setLeaderboardTab(LeaderboardTab tab) {
+    if (tab == leaderboardTab) return;
+    leaderboardTab = tab;
+    notifyListeners();
+  }
+
+  bool isRedeemed(String id) => shopDone.contains(id);
+
+  bool canAfford(ShopItem item) => ticks >= item.cost && !isRedeemed(item.id);
+
+  void redeem(ShopItem item) {
+    if (!canAfford(item)) return;
+    ticks -= item.cost;
+    shopDone.add(item.id);
+    notifyListeners();
+  }
+
+  void sendChat(String raw) {
+    final text = raw.trim();
+    if (text.isEmpty) return;
+    chat.add(ChatTurn(fromUser: true, text: text));
+    chat.add(ChatTurn(fromUser: false, text: DummyChat.replyFor(text)));
+    notifyListeners();
+  }
+
+  String goldLine() {
+    const goldAt = 14;
+    final left = goldAt - streak;
+    if (left <= 0) return 'Gold tier unlocked';
+    return left == 1 ? '1 day to Gold tier' : '$left days to Gold tier';
+  }
+}
