@@ -8,6 +8,7 @@ import '../theme/app_radii.dart';
 import '../theme/app_theme.dart';
 import '../theme/formatters.dart';
 import '../widgets/paper.dart';
+import '../widgets/streak_sheet.dart';
 
 class YouScreen extends StatelessWidget {
   const YouScreen({super.key});
@@ -105,7 +106,12 @@ class YouScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    _StatChip(k: 'STREAK', v: '${state.streak} days', color: AppColors.blush),
+                    _StatChip(
+                      k: 'STREAK',
+                      v: '${state.streak} days',
+                      color: AppColors.blush,
+                      onTap: () => showStreakSheet(context),
+                    ),
                     const SizedBox(width: 8),
                     const _StatChip(
                       k: '8:45 CALLS',
@@ -143,7 +149,9 @@ class YouScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3),
                     child: _RecordCell(
-                      mark: i == seed.callRecord.length - 1 && state.prediction != null
+                      mark:
+                          i == seed.callRecord.length - 1 &&
+                              state.prediction != null
                           ? '?'
                           : seed.callRecord[i],
                     ),
@@ -154,21 +162,38 @@ class YouScreen extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             '${state.prediction == null ? 'Today is unscored until you call it from the 8:45 alert.' : "Today's call is in and shows as a pending square."} Scored at the 3:30 PM close. A call is a game entry, not investment advice, and never places an order.',
-            style: AppTheme.font(size: 11.5, color: AppColors.mute, height: 1.5),
+            style: AppTheme.font(
+              size: 11.5,
+              color: AppColors.mute,
+              height: 1.5,
+            ),
           ),
           const SizedBox(height: 16),
           SectionHeader('Achievements', trailing: seed.achievementsSummary),
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: seed.achievements.length,
+            itemCount: seed.achievements.length + 1,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               mainAxisSpacing: 9,
               crossAxisSpacing: 9,
               childAspectRatio: 0.78,
             ),
-            itemBuilder: (context, i) => _BadgeCard(item: seed.achievements[i]),
+            itemBuilder: (context, i) {
+              if (i == 0) {
+                return _BadgeCard(
+                  item: Achievement(
+                    mark: '${state.streak}',
+                    name: 'Streak',
+                    sub: state.goldLine(),
+                    earned: true,
+                  ),
+                  featured: true,
+                );
+              }
+              return _BadgeCard(item: seed.achievements[i - 1]);
+            },
           ),
           const SizedBox(height: 18),
           TextButton(
@@ -195,7 +220,9 @@ class YouScreen extends StatelessWidget {
       context: context,
       backgroundColor: AppColors.bg,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadii.sheet)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppRadii.sheet),
+        ),
       ),
       builder: (ctx) {
         return Padding(
@@ -226,7 +253,11 @@ class YouScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 'Spends ${formatEnIn(item.cost)} Shercoins. ${item.subtitle}. The voucher lands in your inbox within an hour and is valid for 90 days.',
-                style: AppTheme.font(size: 13, color: AppColors.muteSoft, height: 1.5),
+                style: AppTheme.font(
+                  size: 13,
+                  color: AppColors.muteSoft,
+                  height: 1.5,
+                ),
               ),
               const SizedBox(height: 18),
               Row(
@@ -254,7 +285,10 @@ class YouScreen extends StatelessWidget {
                       ),
                       child: Text(
                         'Close',
-                        style: AppTheme.font(size: 13.5, weight: FontWeight.w800),
+                        style: AppTheme.font(
+                          size: 13.5,
+                          weight: FontWeight.w800,
+                        ),
                       ),
                     ),
                   ),
@@ -269,41 +303,54 @@ class YouScreen extends StatelessWidget {
 }
 
 class _StatChip extends StatelessWidget {
-  const _StatChip({required this.k, required this.v, required this.color});
+  const _StatChip({
+    required this.k,
+    required this.v,
+    required this.color,
+    this.onTap,
+  });
 
   final String k;
   final String v;
   final Color color;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(13, 12, 13, 12),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              k,
-              style: AppTheme.font(
-                size: 10,
-                weight: FontWeight.w700,
-                color: AppColors.mute,
-                letterSpacing: 0.7,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(13, 12, 13, 12),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                k,
+                style: AppTheme.font(
+                  size: 10,
+                  weight: FontWeight.w700,
+                  color: AppColors.mute,
+                  letterSpacing: 0.7,
+                ),
               ),
-            ),
-            const SizedBox(height: 1),
-            Text(
-              v,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: AppTheme.font(size: 16, weight: FontWeight.w800, letterSpacing: -0.4),
-            ),
-          ],
+              const SizedBox(height: 1),
+              Text(
+                v,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTheme.font(
+                  size: 16,
+                  weight: FontWeight.w800,
+                  letterSpacing: -0.4,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -330,8 +377,8 @@ class _ShopTile extends StatelessWidget {
     final costLabel = redeemed
         ? 'REDEEMED'
         : afford
-            ? formatEnIn(item.cost)
-            : 'NEED ${formatEnIn(item.cost)}';
+        ? formatEnIn(item.cost)
+        : 'NEED ${formatEnIn(item.cost)}';
 
     return PaperCard(
       radius: 20,
@@ -374,13 +421,13 @@ class _ShopTile extends StatelessWidget {
             background: redeemed
                 ? AppColors.ink
                 : afford
-                    ? AppColors.blush
-                    : AppColors.ink.withValues(alpha: 0.06),
+                ? AppColors.blush
+                : AppColors.ink.withValues(alpha: 0.06),
             foreground: redeemed
                 ? AppColors.cream
                 : afford
-                    ? AppColors.deep
-                    : AppColors.muteSoft,
+                ? AppColors.deep
+                : AppColors.muteSoft,
           ),
         ],
       ),
@@ -424,20 +471,30 @@ class _RecordCell extends StatelessWidget {
 }
 
 class _BadgeCard extends StatelessWidget {
-  const _BadgeCard({required this.item});
+  const _BadgeCard({required this.item, this.featured = false});
 
   final Achievement item;
+  final bool featured;
 
   @override
   Widget build(BuildContext context) {
+    final earned = item.earned;
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 13, 12, 13),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: item.earned ? AppColors.cream : Colors.transparent,
+        color: featured
+            ? AppColors.blush
+            : earned
+            ? AppColors.cream
+            : Colors.transparent,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: item.earned ? AppColors.lineHeavy : AppColors.line,
+          color: featured
+              ? AppColors.coralLine
+              : earned
+              ? AppColors.lineHeavy
+              : AppColors.line,
         ),
       ),
       child: Column(
@@ -446,10 +503,11 @@ class _BadgeCard extends StatelessWidget {
           Text(
             item.mark,
             style: AppTheme.font(
-              size: 20,
+              size: featured ? 28 : 20,
               weight: FontWeight.w800,
               letterSpacing: -0.4,
-              color: item.earned ? AppColors.ink : AppColors.muteSoft,
+              height: featured ? 1.0 : null,
+              color: earned ? AppColors.ink : AppColors.muteSoft,
             ),
           ),
           const Spacer(),
@@ -461,7 +519,7 @@ class _BadgeCard extends StatelessWidget {
               size: 11.5,
               weight: FontWeight.w800,
               height: 1.2,
-              color: item.earned ? AppColors.ink : AppColors.muteSoft,
+              color: earned ? AppColors.ink : AppColors.muteSoft,
             ),
           ),
           Text(
@@ -470,7 +528,9 @@ class _BadgeCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: AppTheme.font(
               size: 10,
-              color: (item.earned ? AppColors.ink : AppColors.muteSoft).withValues(alpha: 0.75),
+              color: (earned ? AppColors.ink : AppColors.muteSoft).withValues(
+                alpha: 0.75,
+              ),
             ),
           ),
         ],

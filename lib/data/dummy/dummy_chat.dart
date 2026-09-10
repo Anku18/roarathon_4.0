@@ -24,7 +24,7 @@ abstract final class DummyChat {
     CannedReply(
       keywords: ['streak', 'check in', 'check-in'],
       reply:
-          'Open the app on a trading day and tap check-in on Rewards. Miss a day and the count restarts at 1. Gold tier unlocks at 14 days in a row.',
+          'Tap the fire in the top bar to check in. Miss a trading day and the count restarts at 1. Gold tier unlocks at 14 days in a row. Your current streak also lives on You → Achievements.',
     ),
     CannedReply(
       keywords: ['refer', 'invite', 'friend', 'code'],

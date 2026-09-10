@@ -6,7 +6,6 @@ import '../widgets/paper_nav.dart';
 import 'home_screen.dart';
 import 'markets_screen.dart';
 import 'refer_screen.dart';
-import 'rewards_screen.dart';
 import 'you_screen.dart';
 
 class AppShell extends StatefulWidget {
@@ -22,7 +21,6 @@ class _AppShellState extends State<AppShell> {
   static const _pages = [
     HomeScreen(),
     MarketsScreen(),
-    RewardsScreen(),
     ReferScreen(),
     YouScreen(),
   ];

@@ -7,6 +7,7 @@ import '../theme/app_radii.dart';
 import '../theme/app_theme.dart';
 import '../theme/formatters.dart';
 import '../widgets/paper.dart';
+import '../widgets/streak_sheet.dart';
 import 'ask_sher_screen.dart';
 import 'notifications_screen.dart';
 
@@ -27,15 +28,21 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(4, 0, 4, 18),
                 child: Row(
                   children: [
-                    Text(
-                      'Sharekhan',
-                      style: AppTheme.font(
-                        size: 18,
-                        weight: FontWeight.w800,
-                        letterSpacing: -0.45,
+                    Expanded(
+                      child: Text(
+                        'Sharekhan',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTheme.font(
+                          size: 18,
+                          weight: FontWeight.w800,
+                          letterSpacing: -0.45,
+                        ),
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 8),
+                    const StreakChip(),
+                    const SizedBox(width: 6),
                     // ── Notification bell ──
                     GestureDetector(
                       onTap: () => showNotificationsSheet(context),
@@ -61,14 +68,21 @@ class HomeScreen extends StatelessWidget {
                               right: -2,
                               top: -2,
                               child: Container(
-                                constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
-                                padding: const EdgeInsets.symmetric(horizontal: 4),
+                                constraints: const BoxConstraints(
+                                  minWidth: 16,
+                                  minHeight: 16,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                ),
                                 decoration: const BoxDecoration(
                                   color: AppColors.coral,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Text(
-                                  state.unreadCount > 9 ? '9+' : '${state.unreadCount}',
+                                  state.unreadCount > 9
+                                      ? '9+'
+                                      : '${state.unreadCount}',
                                   textAlign: TextAlign.center,
                                   style: AppTheme.font(
                                     size: 9,
@@ -81,10 +95,13 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 6),
                     // ── Ticks pill ──
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 13,
+                        vertical: 7,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.cream,
                         borderRadius: BorderRadius.circular(AppRadii.pill),
@@ -103,7 +120,10 @@ class HomeScreen extends StatelessWidget {
                           const SizedBox(width: 8),
                           Text(
                             formatEnIn(state.ticks),
-                            style: AppTheme.font(size: 13, weight: FontWeight.w800),
+                            style: AppTheme.font(
+                              size: 13,
+                              weight: FontWeight.w800,
+                            ),
                           ),
                         ],
                       ),
@@ -130,10 +150,17 @@ class HomeScreen extends StatelessWidget {
               },
               borderRadius: BorderRadius.circular(AppRadii.pill),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 13),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 17,
+                  vertical: 13,
+                ),
                 child: Row(
                   children: [
-                    const Icon(Icons.chat_bubble_outline, size: 16, color: AppColors.cream),
+                    const Icon(
+                      Icons.chat_bubble_outline,
+                      size: 16,
+                      color: AppColors.cream,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       'Ask Sher',
@@ -208,7 +235,11 @@ class _HomeMarketBoardState extends State<_HomeMarketBoard> {
 }
 
 class _MarketTab extends StatelessWidget {
-  const _MarketTab({required this.label, required this.on, required this.onTap});
+  const _MarketTab({
+    required this.label,
+    required this.on,
+    required this.onTap,
+  });
 
   final String label;
   final bool on;
@@ -261,24 +292,40 @@ class _IndexRow extends StatelessWidget {
               Expanded(
                 child: Text(
                   tick.name,
-                  style: AppTheme.font(size: 14, weight: FontWeight.w800, letterSpacing: -0.2),
+                  style: AppTheme.font(
+                    size: 14,
+                    weight: FontWeight.w800,
+                    letterSpacing: -0.2,
+                  ),
                 ),
               ),
               Text(
                 tick.changePts,
-                style: AppTheme.font(size: 13, weight: FontWeight.w800, color: color),
+                style: AppTheme.font(
+                  size: 13,
+                  weight: FontWeight.w800,
+                  color: color,
+                ),
               ),
               const SizedBox(width: 8),
               Text(
                 tick.change,
-                style: AppTheme.font(size: 13, weight: FontWeight.w800, color: color),
+                style: AppTheme.font(
+                  size: 13,
+                  weight: FontWeight.w800,
+                  color: color,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 4),
           Text(
             tick.value,
-            style: AppTheme.font(size: 22, weight: FontWeight.w800, letterSpacing: -0.6),
+            style: AppTheme.font(
+              size: 22,
+              weight: FontWeight.w800,
+              letterSpacing: -0.6,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
@@ -309,7 +356,11 @@ class _WatchRow extends StatelessWidget {
               children: [
                 Text(
                   item.symbol,
-                  style: AppTheme.font(size: 14, weight: FontWeight.w800, letterSpacing: -0.2),
+                  style: AppTheme.font(
+                    size: 14,
+                    weight: FontWeight.w800,
+                    letterSpacing: -0.2,
+                  ),
                 ),
                 Text(
                   item.qtyLine,
@@ -370,7 +421,9 @@ class _DailyCallPanelState extends State<_DailyCallPanel>
 
   Future<void> _onSubmit() async {
     final state = AppScope.of(context);
-    if (state.callDraft == null || _controller.isAnimating || _controller.isCompleted) {
+    if (state.callDraft == null ||
+        _controller.isAnimating ||
+        _controller.isCompleted) {
       return;
     }
     await _controller.forward();
@@ -384,7 +437,11 @@ class _DailyCallPanelState extends State<_DailyCallPanel>
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Text(
           "We'll know the result post market, at the 3:30 PM close.",
-          style: AppTheme.font(size: 13.5, weight: FontWeight.w700, color: AppColors.cream),
+          style: AppTheme.font(
+            size: 13.5,
+            weight: FontWeight.w700,
+            color: AppColors.cream,
+          ),
         ),
       ),
     );
@@ -470,7 +527,11 @@ class _DailyCallPanelState extends State<_DailyCallPanel>
                 const SizedBox(height: 10),
                 Text(
                   'One call a day. Correct pays ${seed.dailyCall.payCorrect} Shercoins, wrong costs nothing.',
-                  style: AppTheme.font(size: 11.5, color: AppColors.mute, height: 1.45),
+                  style: AppTheme.font(
+                    size: 11.5,
+                    color: AppColors.mute,
+                    height: 1.45,
+                  ),
                 ),
               ],
             ),
@@ -522,4 +583,3 @@ class _CallButton extends StatelessWidget {
     );
   }
 }
-

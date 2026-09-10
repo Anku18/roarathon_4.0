@@ -9,7 +9,7 @@ class PaperNav extends StatelessWidget {
     super.key,
     required this.index,
     required this.onSelect,
-    this.labels = const ['Home', 'Markets', 'Rewards', 'Refer', 'You'],
+    this.labels = const ['Home', 'Markets', 'Refer', 'You'],
   });
 
   final int index;
@@ -41,7 +41,9 @@ class PaperNav extends StatelessWidget {
                         width: 6,
                         height: 6,
                         decoration: BoxDecoration(
-                          color: i == index ? AppColors.coral : Colors.transparent,
+                          color: i == index
+                              ? AppColors.coral
+                              : Colors.transparent,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -50,7 +52,9 @@ class PaperNav extends StatelessWidget {
                         labels[i],
                         style: AppTheme.font(
                           size: 10.5,
-                          color: i == index ? AppColors.ink : AppColors.muteSoft,
+                          color: i == index
+                              ? AppColors.ink
+                              : AppColors.muteSoft,
                         ),
                       ),
                     ],

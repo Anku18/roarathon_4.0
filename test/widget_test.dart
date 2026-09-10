@@ -5,6 +5,7 @@ import 'package:roarathon_4/main.dart';
 import 'package:roarathon_4/state/app_state.dart';
 import 'package:roarathon_4/state/session_store.dart';
 import 'package:roarathon_4/widgets/paper_nav.dart';
+import 'package:roarathon_4/widgets/streak_sheet.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -51,16 +52,28 @@ void main() {
       findsOneWidget,
     );
 
+    await tester.tap(find.byKey(const Key('top-streak')));
+    await tester.pumpAndSettle();
+    expect(find.text('12 day streak'), findsOneWidget);
+    await tester.tap(find.text('Check in for today'));
+    await tester.pumpAndSettle();
+    expect(find.text('13 day streak'), findsOneWidget);
+    Navigator.of(tester.element(find.byType(StreakSheet))).pop();
+    await tester.pumpAndSettle();
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('top-streak')),
+        matching: find.text('13'),
+      ),
+      findsOneWidget,
+    );
+
     Finder nav(String label) =>
         find.descendant(of: find.byType(PaperNav), matching: find.text(label));
 
     await tester.tap(nav('Markets'));
     await tester.pumpAndSettle();
     expect(find.text('Dummy watchlist'), findsOneWidget);
-
-    await tester.tap(nav('Rewards'));
-    await tester.pumpAndSettle();
-    expect(find.text('Your streak'), findsOneWidget);
 
     await tester.tap(nav('Refer'));
     await tester.pumpAndSettle();
@@ -69,6 +82,8 @@ void main() {
     await tester.tap(nav('You'));
     await tester.pumpAndSettle();
     expect(find.text('Rohit Menon'), findsOneWidget);
+    expect(find.text('13 days'), findsOneWidget);
+    expect(find.text('Streak'), findsOneWidget);
     expect(find.text('Log out'), findsOneWidget);
   });
 }
