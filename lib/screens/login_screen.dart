@@ -52,22 +52,11 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 56,
-              height: 96,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: AppColors.coral,
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Text(
-                'S',
-                style: AppTheme.font(
-                  size: 34,
-                  weight: FontWeight.w800,
-                  color: AppColors.cream,
-                ),
-              ),
+            Image.asset(
+              'assets/app_logo.png',
+              width: 72,
+              height: 72,
+              semanticLabel: 'Investo logo',
             ),
             // const SizedBox(height: 28),
             // Text(

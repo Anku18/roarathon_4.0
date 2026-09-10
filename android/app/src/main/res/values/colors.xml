@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App ground (AppColors.bg) behind the logo on the launch screen. -->
+    <color name="launch_background">#FAF8F3</color>
+	<color name="ic_launcher_background">#FF4D2E</color>
+</resources>
