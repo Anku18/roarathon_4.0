@@ -9,7 +9,7 @@ class PaperNav extends StatelessWidget {
     super.key,
     required this.index,
     required this.onSelect,
-    this.labels = const ['Home', 'Refer', 'You'],
+    this.labels = const ['Home', 'Refer', 'Family', 'You'],
   });
 
   final int index;

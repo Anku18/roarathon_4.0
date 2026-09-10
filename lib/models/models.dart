@@ -222,6 +222,129 @@ class CannedReply {
   final String reply;
 }
 
+enum AssetClass {
+  market('Equity & mutual funds'),
+  fd('Fixed deposits'),
+  gold('Sovereign gold bonds');
+
+  const AssetClass(this.label);
+
+  final String label;
+}
+
+class FamilyMember {
+  const FamilyMember({
+    required this.key,
+    required this.name,
+    required this.role,
+    required this.market,
+    required this.fd,
+    required this.gold,
+    required this.delta,
+    this.minor = false,
+  });
+
+  /// 'RM' | 'PM' | … — also the avatar initials.
+  final String key;
+  final String name;
+  final String role;
+  final int market;
+  final int fd;
+  final int gold;
+
+  /// Today's change on market-linked holdings; may be negative.
+  final int delta;
+  final bool minor;
+
+  String get firstName => name.split(' ').first;
+  int get total => market + fd + gold;
+
+  int amountIn(AssetClass asset) => switch (asset) {
+        AssetClass.market => market,
+        AssetClass.fd => fd,
+        AssetClass.gold => gold,
+      };
+}
+
+class FixedDeposit {
+  const FixedDeposit({
+    required this.ownerKey,
+    required this.bank,
+    required this.amount,
+    required this.rate,
+    required this.matures,
+    required this.tag,
+  });
+
+  /// Matches [FamilyMember.key].
+  final String ownerKey;
+  final String bank;
+  final int amount;
+
+  /// '7.35%' — shown as '7.35% p.a.'.
+  final String rate;
+  final String matures;
+  final String tag;
+
+  bool get maturesSoon => tag == 'MATURES SOON';
+}
+
+class InsurancePolicy {
+  const InsurancePolicy({
+    required this.ownerKey,
+    required this.kind,
+    required this.name,
+    required this.who,
+    required this.cover,
+    required this.premium,
+    required this.tag,
+    required this.annualPremium,
+    required this.renewsOn,
+    this.lapseNote,
+  });
+
+  /// Owner key for a floater that covers the whole family.
+  static const familyOwner = '*';
+
+  /// Matches [FamilyMember.key], or [familyOwner].
+  final String ownerKey;
+  final String kind;
+  final String name;
+  final String who;
+  final int cover;
+
+  /// '₹41,300 a year · due 19 Sep'.
+  final String premium;
+  final String tag;
+  final int annualPremium;
+  final DateTime renewsOn;
+
+  /// What happens if the premium is missed, for the premium-due card.
+  final String? lapseNote;
+
+  bool get isActive => tag == 'ACTIVE';
+  bool get coversFamily => ownerKey == familyOwner;
+}
+
+/// One family-wealth API response. Cached so the screen renders offline.
+class FamilyWealth {
+  const FamilyWealth({
+    required this.members,
+    required this.deposits,
+    required this.policies,
+    required this.lastSyncedAt,
+    required this.interestNote,
+  });
+
+  final List<FamilyMember> members;
+  final List<FixedDeposit> deposits;
+  final List<InsurancePolicy> policies;
+  final DateTime lastSyncedAt;
+
+  /// Footnote under the full deposit list.
+  final String interestNote;
+}
+
 /// Immutable snapshot used to seed [AppState] after login.
 class DummySeed {
   const DummySeed({
@@ -250,6 +373,7 @@ class DummySeed {
     required this.chatSuggestions,
     required this.cannedReplies,
     required this.fallbackReply,
+    required this.family,
   });
 
   final UserProfile profile;
@@ -277,4 +401,5 @@ class DummySeed {
   final List<String> chatSuggestions;
   final List<CannedReply> cannedReplies;
   final String fallbackReply;
+  final FamilyWealth family;
 }

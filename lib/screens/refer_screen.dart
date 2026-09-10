@@ -8,6 +8,7 @@ import '../state/app_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_radii.dart';
 import '../theme/app_theme.dart';
+import '../widgets/net_bubble.dart';
 import '../widgets/paper.dart';
 
 class ReferScreen extends StatelessWidget {
@@ -26,32 +27,44 @@ class ReferScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 8, 4, 14),
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  seed.seasonLabel,
-                  style: AppTheme.font(
-                    size: 11.5,
-                    weight: FontWeight.w700,
-                    color: AppColors.mute,
-                    letterSpacing: 1.0,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        seed.seasonLabel,
+                        style: AppTheme.font(
+                          size: 11.5,
+                          weight: FontWeight.w700,
+                          color: AppColors.mute,
+                          letterSpacing: 1.0,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        'Leaderboard',
+                        style: AppTheme.font(
+                          size: 30,
+                          weight: FontWeight.w800,
+                          letterSpacing: -1.0,
+                          height: 1.1,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        'A referral counts once your friend funds their account.',
+                        style: AppTheme.font(size: 12.5, color: AppColors.mute),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 3),
-                Text(
-                  'Leaderboard',
-                  style: AppTheme.font(
-                    size: 30,
-                    weight: FontWeight.w800,
-                    letterSpacing: -1.0,
-                    height: 1.1,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  'A referral counts once your friend funds their account.',
-                  style: AppTheme.font(size: 12.5, color: AppColors.mute),
+                const SizedBox(width: 14),
+                const Padding(
+                  padding: EdgeInsets.only(top: 6),
+                  child: NetBubble(),
                 ),
               ],
             ),

@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/app_shell.dart';
 import 'screens/login_screen.dart';
+import 'services/connectivity_service.dart';
 import 'services/notification_service.dart';
 import 'state/app_scope.dart';
 import 'state/app_state.dart';
@@ -26,18 +27,33 @@ Future<void> main() async {
     systemNavigationBarDividerColor: Colors.transparent,
   ));
 
-  // Initialise Firebase
-  await Firebase.initializeApp();
-
-  // Register background handler BEFORE runApp
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  // Initialise Firebase. iOS has no GoogleService-Info.plist yet, so this can
+  // fail there — keep the app running without push notifications.
+  var firebaseReady = false;
+  try {
+    await Firebase.initializeApp();
+    // Register background handler BEFORE runApp
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    firebaseReady = true;
+  } catch (e) {
+    debugPrint('[Firebase] Init failed, notifications disabled: $e');
+  }
 
   final prefs = await SharedPreferences.getInstance();
   final state = AppState(store: PrefsSessionStore(prefs));
   await state.restore();
 
   // Start notification service (request permission, get token, listen to FCM)
-  await NotificationService.instance.init(state);
+  if (firebaseReady) {
+    try {
+      await NotificationService.instance.init(state);
+    } catch (e) {
+      debugPrint('[FCM] Notification service init failed: $e');
+    }
+  }
+
+  // Drive the header connectivity bubble from the real network state.
+  ConnectivityService.instance.init(state);
 
   runApp(SharekhanApp(state: state));
 }

@@ -1,5 +1,6 @@
 import '../../models/models.dart';
 import 'dummy_chat.dart';
+import 'dummy_family.dart';
 import 'dummy_home.dart';
 import 'dummy_markets.dart';
 import 'dummy_referrals.dart';
@@ -8,7 +9,7 @@ import 'dummy_streak.dart';
 
 /// Assembled dummy worlds. Add a new seed here when you add a login.
 abstract final class DummySeeds {
-  static const rohit = DummySeed(
+  static final rohit = DummySeed(
     profile: UserProfile(
       clientId: 'RM4K92',
       name: 'Rohit Menon',
@@ -43,6 +44,7 @@ abstract final class DummySeeds {
     chatSuggestions: DummyChat.suggestions,
     cannedReplies: DummyChat.replies,
     fallbackReply: DummyChat.fallback,
+    family: DummyFamily.wealth,
   );
 
   static DummySeed byId(String seedId) {

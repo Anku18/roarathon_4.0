@@ -7,6 +7,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_radii.dart';
 import '../theme/app_theme.dart';
 import '../theme/formatters.dart';
+import '../widgets/net_bubble.dart';
 import '../widgets/paper.dart';
 import '../widgets/streak_sheet.dart';
 
@@ -63,6 +64,7 @@ class YouScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                const NetBubble(),
               ],
             ),
           ),

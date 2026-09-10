@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../data/dummy/dummy.dart';
 import '../models/models.dart';
 import '../models/notification_model.dart';
+import 'family_view.dart';
 import 'session_store.dart';
 
 enum LeaderboardTab { referrals, accuracy }
@@ -28,6 +29,14 @@ class AppState extends ChangeNotifier {
 
   int get unreadCount => notifications.where((n) => !n.isRead).length;
   final List<ChatTurn> chat = [];
+
+  /// Family wealth filter: [FamilyView.everyone] or a member key.
+  String familySelection = FamilyView.everyone;
+
+  /// Fed by the connectivity stream, never by user input.
+  bool isOnline = true;
+
+  FamilyView get family => FamilyView(seed.family, familySelection);
 
   DummySeed get seed {
     final s = _seed;
@@ -84,6 +93,7 @@ class AppState extends ChangeNotifier {
     prediction = null;
     shopDone.clear();
     leaderboardTab = LeaderboardTab.referrals;
+    familySelection = FamilyView.everyone;
     chat.clear();
     notifications.clear();
     await _store.clear();
@@ -100,6 +110,7 @@ class AppState extends ChangeNotifier {
     prediction = null;
     shopDone.clear();
     leaderboardTab = LeaderboardTab.referrals;
+    familySelection = FamilyView.everyone;
     chat
       ..clear()
       ..add(ChatTurn(fromUser: false, text: seed.chatGreeting));
@@ -137,6 +148,19 @@ class AppState extends ChangeNotifier {
   void setLeaderboardTab(LeaderboardTab tab) {
     if (tab == leaderboardTab) return;
     leaderboardTab = tab;
+    notifyListeners();
+  }
+
+  /// Scope the Family wealth screen to one member, or [FamilyView.everyone].
+  void selectFamilyMember(String key) {
+    if (key == familySelection) return;
+    familySelection = key;
+    notifyListeners();
+  }
+
+  void setOnline(bool online) {
+    if (online == isOnline) return;
+    isOnline = online;
     notifyListeners();
   }
 

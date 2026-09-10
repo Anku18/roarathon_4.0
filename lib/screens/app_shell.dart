@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_safe_area.dart';
 import '../widgets/paper_nav.dart';
+import 'family_screen.dart';
 import 'home_screen.dart';
 import 'refer_screen.dart';
 import 'you_screen.dart';
@@ -20,6 +21,7 @@ class _AppShellState extends State<AppShell> {
   static const _pages = [
     HomeScreen(),
     ReferScreen(),
+    FamilyScreen(),
     YouScreen(),
   ];
 

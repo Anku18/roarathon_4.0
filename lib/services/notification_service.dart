@@ -19,7 +19,8 @@ class NotificationService {
   NotificationService._();
   static final NotificationService instance = NotificationService._();
 
-  final _messaging = FirebaseMessaging.instance;
+  // Resolved lazily so the singleton is usable even if Firebase failed to init.
+  FirebaseMessaging get _messaging => FirebaseMessaging.instance;
   final _localNotifications = FlutterLocalNotificationsPlugin();
 
   static const _channelId = 'roarathon_notifications';
@@ -60,15 +61,30 @@ class NotificationService {
 
     // Initialise flutter_local_notifications
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const initSettings = InitializationSettings(android: androidInit);
+    // Permission is already requested via FCM above, so don't prompt again.
+    const darwinInit = DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+    const initSettings = InitializationSettings(
+      android: androidInit,
+      iOS: darwinInit,
+      macOS: darwinInit,
+    );
     await _localNotifications.initialize(
       initSettings,
       onDidReceiveNotificationResponse: _onLocalNotificationTap,
     );
 
     // ── 3. FCM token ───────────────────────────────────────────────────────
-    _fcmToken = await _messaging.getToken();
-     debugPrint('[FCM] Token: $_fcmToken');
+    // Throws on iOS when no APNs token is available (e.g. the simulator).
+    try {
+      _fcmToken = await _messaging.getToken();
+      debugPrint('[FCM] Token: $_fcmToken');
+    } catch (e) {
+      debugPrint('[FCM] Could not get token: $e');
+    }
 
     _messaging.onTokenRefresh.listen((token) {
       _fcmToken = token;
@@ -88,7 +104,11 @@ class NotificationService {
     }
 
     // ── 7. Subscribe to default topics ────────────────────────────────────
-    await _messaging.subscribeToTopic('all_users');
+    try {
+      await _messaging.subscribeToTopic('all_users');
+    } catch (e) {
+      debugPrint('[FCM] Could not subscribe to topic: $e');
+    }
   }
 
   // ── Handlers ──────────────────────────────────────────────────────────────
@@ -112,6 +132,7 @@ class NotificationService {
           priority: Priority.high,
           icon: '@mipmap/ic_launcher',
         ),
+        iOS: const DarwinNotificationDetails(),
       ),
     );
   }

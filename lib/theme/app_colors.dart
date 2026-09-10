@@ -20,6 +20,19 @@ abstract final class AppColors {
   static const coralLine = Color(0x66FF4D2E);
   static const locked = Color(0x9E17150F);
 
+  // Family wealth (4e) and the connectivity bubble.
+  static const gold = Color(0xFFE0B04A);
+  static const online = Color(0xFF1F9D55);
+  static const muteStrong = Color(0xB317150F); // ink 70%
+  static const chipIdle = Color(0x1417150F); // ink 8%
+  static const track = Color(0x1717150F); // ink 9%
+  static const lossFill = Color(0x1217150F); // ink 7%
+  static const tagNeutral = Color(0x0F17150F); // ink 6%
+  static const lineDashed = Color(0x4017150F); // ink 25%
+  static const coralAlert = Color(0x73FF4D2E); // coral 45%
+  static const coralHalo = Color(0x33FF4D2E); // coral 20%
+  static const onlineHalo = Color(0x2E1F9D55); // green 18%
+
   static const gain = Color(0xFF188A42);
   static const loss = Color(0xFFE03131);
 

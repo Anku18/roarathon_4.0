@@ -4,6 +4,7 @@ import '../data/dummy/dummy.dart';
 import '../state/app_scope.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import '../widgets/net_bubble.dart';
 import '../widgets/paper.dart';
 
 class MarketsScreen extends StatelessWidget {
@@ -18,14 +19,21 @@ class MarketsScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 8, 4, 6),
-            child: Text(
-              'Markets',
-              style: AppTheme.font(
-                size: 30,
-                weight: FontWeight.w800,
-                letterSpacing: -1.0,
-                height: 1.1,
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Markets',
+                    style: AppTheme.font(
+                      size: 30,
+                      weight: FontWeight.w800,
+                      letterSpacing: -1.0,
+                      height: 1.1,
+                    ),
+                  ),
+                ),
+                const NetBubble(),
+              ],
             ),
           ),
           Padding(

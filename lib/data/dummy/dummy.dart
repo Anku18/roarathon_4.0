@@ -1,5 +1,6 @@
 export 'dummy_auth.dart';
 export 'dummy_chat.dart';
+export 'dummy_family.dart';
 export 'dummy_home.dart';
 export 'dummy_markets.dart';
 export 'dummy_market_feed.dart';

@@ -9,6 +9,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_radii.dart';
 import '../theme/app_theme.dart';
 import '../theme/formatters.dart';
+import '../widgets/net_bubble.dart';
 import '../widgets/paper.dart';
 import '../widgets/streak_sheet.dart';
 import 'ask_sher_screen.dart';
@@ -131,6 +132,8 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
+                    const SizedBox(width: 4),
+                    const NetBubble(),
                   ],
                 ),
               ),
