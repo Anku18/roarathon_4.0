@@ -144,9 +144,14 @@ class StreakSheet extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
+          Text(
+            _todayLabel(DateTime.now()),
+            style: AppTheme.font(size: 12.5, color: AppColors.mute),
+          ),
+          const SizedBox(height: 10),
           Row(
             children: [
-              for (final day in seed.week)
+              for (final day in WeekDayDef.calendarWeek())
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3),
@@ -187,8 +192,8 @@ class _DayCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final on = day.past || (day.isToday && claimed);
-    final todayOpen = day.isToday && !claimed;
+    final on = !day.weekend && (day.past || (day.isToday && claimed));
+    final todayOpen = !day.weekend && day.isToday && !claimed;
     return Column(
       children: [
         Container(
@@ -199,6 +204,8 @@ class _DayCell extends StatelessWidget {
                 ? AppColors.coral
                 : todayOpen
                 ? AppColors.blush
+                : day.weekend
+                ? AppColors.sand
                 : AppColors.cream,
             borderRadius: BorderRadius.circular(AppRadii.day),
             border: Border.all(
@@ -210,7 +217,11 @@ class _DayCell extends StatelessWidget {
             style: AppTheme.font(
               size: 12.5,
               weight: FontWeight.w800,
-              color: on ? AppColors.cream : AppColors.ink,
+              color: on
+                  ? AppColors.cream
+                  : day.weekend
+                  ? AppColors.muteSoft
+                  : AppColors.ink,
             ),
           ),
         ),
@@ -219,4 +230,31 @@ class _DayCell extends StatelessWidget {
       ],
     );
   }
+}
+
+String _todayLabel(DateTime now) {
+  const days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  return '${days[now.weekday - 1]}, ${now.day} ${months[now.month - 1]} ${now.year}';
 }

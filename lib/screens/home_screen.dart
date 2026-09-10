@@ -99,39 +99,39 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 6),
-                    // ── Ticks pill ──
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 13,
-                        vertical: 7,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.cream,
-                        borderRadius: BorderRadius.circular(AppRadii.pill),
-                        border: Border.all(color: AppColors.lineStrong),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 8,
-                            height: 8,
-                            decoration: const BoxDecoration(
-                              color: AppColors.coral,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            formatEnIn(state.ticks),
-                            style: AppTheme.font(
-                              size: 13,
-                              weight: FontWeight.w800,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // const SizedBox(width: 6),
+                    // // ── Ticks pill ──
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(
+                    //     horizontal: 13,
+                    //     vertical: 7,
+                    //   ),
+                    //   decoration: BoxDecoration(
+                    //     color: AppColors.cream,
+                    //     borderRadius: BorderRadius.circular(AppRadii.pill),
+                    //     border: Border.all(color: AppColors.lineStrong),
+                    //   ),
+                    //   child: Row(
+                    //     children: [
+                    //       Container(
+                    //         width: 8,
+                    //         height: 8,
+                    //         decoration: const BoxDecoration(
+                    //           color: AppColors.coral,
+                    //           shape: BoxShape.circle,
+                    //         ),
+                    //       ),
+                    //       const SizedBox(width: 8),
+                    //       Text(
+                    //         formatEnIn(state.ticks),
+                    //         style: AppTheme.font(
+                    //           size: 13,
+                    //           weight: FontWeight.w800,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     const SizedBox(width: 4),
                     const NetBubble(),
                   ],

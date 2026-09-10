@@ -98,12 +98,41 @@ class WeekDayDef {
     required this.n,
     required this.past,
     required this.isToday,
+    this.weekend = false,
   });
 
   final String dow;
   final int n;
   final bool past;
   final bool isToday;
+  final bool weekend;
+
+  static const _dow = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+  static List<WeekDayDef> calendarWeek([DateTime? now]) {
+    final today = now ?? DateTime.now();
+    final start = DateTime(
+      today.year,
+      today.month,
+      today.day,
+    ).subtract(Duration(days: today.weekday - DateTime.monday));
+    return [
+      for (var i = 0; i < 7; i++)
+        WeekDayDef.fromDate(start.add(Duration(days: i)), today),
+    ];
+  }
+
+  factory WeekDayDef.fromDate(DateTime date, DateTime today) {
+    final day = DateTime(date.year, date.month, date.day);
+    final t = DateTime(today.year, today.month, today.day);
+    return WeekDayDef(
+      dow: _dow[day.weekday - 1],
+      n: day.day,
+      past: day.isBefore(t),
+      isToday: day == t,
+      weekend: day.weekday >= DateTime.saturday,
+    );
+  }
 }
 
 class LeaderboardRow {
@@ -260,10 +289,10 @@ class FamilyMember {
   int get total => market + fd + gold;
 
   int amountIn(AssetClass asset) => switch (asset) {
-        AssetClass.market => market,
-        AssetClass.fd => fd,
-        AssetClass.gold => gold,
-      };
+    AssetClass.market => market,
+    AssetClass.fd => fd,
+    AssetClass.gold => gold,
+  };
 }
 
 class FixedDeposit {
