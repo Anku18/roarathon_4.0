@@ -4,6 +4,7 @@ import '../../models/models.dart';
 abstract final class DummyMarkets {
   static const subtitle =
       'Full markets board is coming. This is a dummy watchlist so the tab isn’t empty.';
+  static const tradeCoins = 20;
 
   static const indices = <IndexTick>[
     IndexTick(

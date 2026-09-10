@@ -186,6 +186,12 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void placeDummyTrade({required String symbol, required String side}) {
+    if (symbol.isEmpty || (side != 'BUY' && side != 'SELL')) return;
+    ticks += DummyMarkets.tradeCoins;
+    notifyListeners();
+  }
+
   void sendChat(String raw) {
     final text = raw.trim();
     if (text.isEmpty) return;

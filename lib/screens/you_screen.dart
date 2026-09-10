@@ -7,6 +7,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_radii.dart';
 import '../theme/app_theme.dart';
 import '../theme/formatters.dart';
+import '../widgets/coins_pill.dart';
 import '../widgets/net_bubble.dart';
 import '../widgets/paper.dart';
 import '../widgets/streak_sheet.dart';
@@ -83,8 +84,8 @@ class YouScreen extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          formatEnIn(state.ticks),
+                        child: AnimatedCoinCount(
+                          ticks: state.ticks,
                           style: AppTheme.font(
                             size: 44,
                             weight: FontWeight.w800,

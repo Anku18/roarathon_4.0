@@ -8,10 +8,11 @@ import '../state/app_scope.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_radii.dart';
 import '../theme/app_theme.dart';
-import '../theme/formatters.dart';
+import '../widgets/coins_pill.dart';
 import '../widgets/net_bubble.dart';
 import '../widgets/paper.dart';
 import '../widgets/streak_sheet.dart';
+import '../widgets/trade_sheet.dart';
 import 'ask_sher_screen.dart';
 import 'notifications_screen.dart';
 
@@ -99,39 +100,8 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // const SizedBox(width: 6),
-                    // // ── Ticks pill ──
-                    // Container(
-                    //   padding: const EdgeInsets.symmetric(
-                    //     horizontal: 13,
-                    //     vertical: 7,
-                    //   ),
-                    //   decoration: BoxDecoration(
-                    //     color: AppColors.cream,
-                    //     borderRadius: BorderRadius.circular(AppRadii.pill),
-                    //     border: Border.all(color: AppColors.lineStrong),
-                    //   ),
-                    //   child: Row(
-                    //     children: [
-                    //       Container(
-                    //         width: 8,
-                    //         height: 8,
-                    //         decoration: const BoxDecoration(
-                    //           color: AppColors.coral,
-                    //           shape: BoxShape.circle,
-                    //         ),
-                    //       ),
-                    //       const SizedBox(width: 8),
-                    //       Text(
-                    //         formatEnIn(state.ticks),
-                    //         style: AppTheme.font(
-                    //           size: 13,
-                    //           weight: FontWeight.w800,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    const SizedBox(width: 6),
+                    CoinsPill(ticks: state.ticks),
                     const SizedBox(width: 4),
                     const NetBubble(),
                   ],
@@ -400,6 +370,7 @@ class _WatchRow extends StatelessWidget {
     return PaperCard(
       radius: 20,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      onTap: () => showTradeSheet(context, item),
       child: Row(
         children: [
           Expanded(
