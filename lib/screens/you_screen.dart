@@ -132,7 +132,7 @@ class YouScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const SectionHeader('Redeem', trailing: 'Learning & brokerage'),
+          const SectionHeader('Redeem'),
           for (var i = 0; i < seed.shop.length; i++) ...[
             _ShopTile(
               item: seed.shop[i],

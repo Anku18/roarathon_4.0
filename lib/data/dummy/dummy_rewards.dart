@@ -21,39 +21,40 @@ abstract final class DummyRewards {
 
   static const shop = <ShopItem>[
     ShopItem(
-      id: 's1',
-      kicker: 'WEBINAR',
-      title: 'Live webinar voucher',
-      subtitle: 'Any Sharekhan Classroom session',
-      cost: 300,
+      id: 's6',
+      kicker: 'TRADE TIGER',
+      title: 'Trade Tiger desktop, 30 days',
+      subtitle: 'Full terminal: charts, option chain, and order blotter',
+      cost: 1200,
     ),
     ShopItem(
-      id: 's2',
-      kicker: 'CLASS',
-      title: 'Basic class: Reading a chart',
-      subtitle: '90 minutes, live with an analyst',
-      cost: 600,
+      id: 's8',
+      kicker: 'PATTERN FINDER',
+      title: 'Pattern Finder, 7 days',
+      subtitle: 'Scan charts for classic setups before the open',
+      cost: 800,
     ),
     ShopItem(
-      id: 's3',
+      id: 's9',
+      kicker: 'RESEARCH',
+      title: 'Research calls, 30 days',
+      subtitle: 'Desk notes and morning calls to your inbox',
+      cost: 700,
+    ),
+    ShopItem(
+      id: 's10',
       kicker: 'BROKERAGE',
-      title: '₹500 brokerage credit',
-      subtitle: 'Applies to your next 30 days of orders',
-      cost: 500,
+      title: '10 trades, 2 trades off',
+      subtitle: 'Place 10 delivery trades, the next 2 have ₹0 brokerage',
+      cost: 400,
     ),
+
     ShopItem(
       id: 's4',
       kicker: 'COURSE',
       title: '40% off Derivatives Masterclass',
       subtitle: 'Six weeks, certified',
       cost: 1500,
-    ),
-    ShopItem(
-      id: 's5',
-      kicker: 'COURSE',
-      title: 'Full access · any premium course',
-      subtitle: 'One course, your pick',
-      cost: 4000,
     ),
   ];
 
