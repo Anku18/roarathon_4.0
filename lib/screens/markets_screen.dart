@@ -69,7 +69,7 @@ class MarketsScreen extends StatelessWidget {
             style: AppTheme.font(
               size: 12,
               weight: FontWeight.w800,
-              color: idx.up ? AppColors.deep : AppColors.mute,
+              color: AppColors.delta(idx.up),
             ),
           ),
                     ],
@@ -113,7 +113,7 @@ class MarketsScreen extends StatelessWidget {
                         style: AppTheme.font(
                           size: 12,
                           weight: FontWeight.w800,
-                          color: seed.watchlist[i].up ? AppColors.deep : AppColors.mute,
+                          color: AppColors.delta(seed.watchlist[i].up),
                         ),
                       ),
                     ],

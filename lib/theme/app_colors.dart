@@ -19,4 +19,9 @@ abstract final class AppColors {
   static const lineHeavy = Color(0x3317150F);
   static const coralLine = Color(0x66FF4D2E);
   static const locked = Color(0x9E17150F);
+
+  static const gain = Color(0xFF188A42);
+  static const loss = Color(0xFFE03131);
+
+  static Color delta(bool up) => up ? gain : loss;
 }

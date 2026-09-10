@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import '../data/dummy/dummy.dart';
 import '../models/models.dart';
 import '../state/app_scope.dart';
 import '../theme/app_colors.dart';
@@ -191,10 +194,33 @@ class _HomeMarketBoard extends StatefulWidget {
 
 class _HomeMarketBoardState extends State<_HomeMarketBoard> {
   bool _indices = true;
+  final _feed = DummyMarketFeed();
+  Timer? _timer;
+
+  bool get _inWidgetTest => WidgetsBinding.instance.runtimeType
+      .toString()
+      .contains('TestWidgetsFlutterBinding');
+
+  @override
+  void initState() {
+    super.initState();
+    if (_inWidgetTest) return;
+    _timer = Timer.periodic(const Duration(milliseconds: 450), (_) {
+      if (!mounted) return;
+      setState(_feed.tick);
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final seed = AppScope.of(context).seed;
+    final indices = _feed.indices;
+    final watchlist = _feed.watchlist;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,16 +244,39 @@ class _HomeMarketBoardState extends State<_HomeMarketBoard> {
             ),
           ],
         ),
+        // const SizedBox(height: 8),
+        // Row(
+        //   children: [
+        //     Container(
+        //       width: 7,
+        //       height: 7,
+        //       decoration: const BoxDecoration(
+        //         color: AppColors.coral,
+        //         shape: BoxShape.circle,
+        //       ),
+        //     ),
+        //     // const SizedBox(width: 6),
+        //     // Text(
+        //     //   'LIVE',
+        //     //   style: AppTheme.font(
+        //     //     size: 11,
+        //     //     weight: FontWeight.w700,
+        //     //     color: AppColors.mute,
+        //     //     letterSpacing: 0.8,
+        //     //   ),
+        //     // ),
+        //   ],
+        // ),
         const SizedBox(height: 12),
         if (_indices)
-          for (var i = 0; i < seed.indices.length; i++) ...[
-            _IndexRow(tick: seed.indices[i]),
-            if (i != seed.indices.length - 1) const SizedBox(height: 8),
+          for (var i = 0; i < indices.length; i++) ...[
+            _IndexRow(tick: indices[i]),
+            if (i != indices.length - 1) const SizedBox(height: 8),
           ]
         else
-          for (var i = 0; i < seed.watchlist.length; i++) ...[
-            _WatchRow(item: seed.watchlist[i]),
-            if (i != seed.watchlist.length - 1) const SizedBox(height: 8),
+          for (var i = 0; i < watchlist.length; i++) ...[
+            _WatchRow(item: watchlist[i]),
+            if (i != watchlist.length - 1) const SizedBox(height: 8),
           ],
       ],
     );
@@ -279,8 +328,7 @@ class _IndexRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final up = tick.up;
-    final color = up ? AppColors.deep : AppColors.mute;
+    final color = AppColors.delta(tick.up);
     return PaperCard(
       radius: 20,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -321,6 +369,7 @@ class _IndexRow extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             tick.value,
+            key: ValueKey(tick.value),
             style: AppTheme.font(
               size: 22,
               weight: FontWeight.w800,
@@ -374,6 +423,7 @@ class _WatchRow extends StatelessWidget {
             children: [
               Text(
                 item.value,
+                key: ValueKey(item.value),
                 style: AppTheme.font(size: 14, weight: FontWeight.w800),
               ),
               Text(
@@ -381,7 +431,7 @@ class _WatchRow extends StatelessWidget {
                 style: AppTheme.font(
                   size: 12,
                   weight: FontWeight.w800,
-                  color: item.up ? AppColors.deep : AppColors.mute,
+                  color: AppColors.delta(item.up),
                 ),
               ),
             ],
