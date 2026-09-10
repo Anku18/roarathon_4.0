@@ -240,9 +240,8 @@ class ScreenPad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final top = MediaQuery.paddingOf(context).top;
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(16, top + 8, 16, bottom),
+      padding: EdgeInsets.fromLTRB(16, 8, 16, bottom),
       child: child,
     );
   }

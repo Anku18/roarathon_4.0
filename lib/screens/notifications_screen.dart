@@ -5,6 +5,7 @@ import '../services/notification_service.dart';
 import '../state/app_scope.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_safe_area.dart';
 
 /// Opens as a modal bottom sheet.
 void showNotificationsSheet(BuildContext context) {
@@ -36,7 +37,9 @@ class _NotificationsSheet extends StatelessWidget {
       snap: true,
       snapSizes: const [0.4, 0.72, 0.92],
       builder: (context, scrollController) {
-        return Container(
+        return AppSafeArea(
+          top: false,
+          child: Container(
           decoration: const BoxDecoration(
             color: AppColors.cream,
             borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
@@ -169,6 +172,7 @@ class _NotificationsSheet extends StatelessWidget {
                       ),
               ),
             ],
+          ),
           ),
         );
       },

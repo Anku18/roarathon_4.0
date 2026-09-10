@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../data/dummy/dummy.dart';
 import '../state/app_scope.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_radii.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_safe_area.dart';
 import '../widgets/paper.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -45,10 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final top = MediaQuery.paddingOf(context).top;
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(24, top + 48, 24, 40),
+      body: AppSafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 48, 24, 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -146,6 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
             //   style: AppTheme.font(size: 12.5, color: AppColors.mute),
             // ),
           ],
+        ),
         ),
       ),
     );

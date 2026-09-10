@@ -23,7 +23,7 @@ void main() {
     await tester.pumpWidget(SharekhanApp(state: state));
     await tester.pump();
 
-    expect(find.text('Rewards prototype'), findsOneWidget);
+    expect(find.text('Investo'), findsOneWidget);
 
     await tester.enterText(find.byType(TextField).first, 'RM4K92');
     await tester.enterText(find.byType(TextField).at(1), 'demo123');

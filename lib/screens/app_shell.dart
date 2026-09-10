@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../widgets/app_safe_area.dart';
 import '../widgets/paper_nav.dart';
 import 'home_screen.dart';
 import 'markets_screen.dart';
@@ -28,24 +29,25 @@ class _AppShellState extends State<AppShell> {
 
   @override
   Widget build(BuildContext context) {
-    final bottom = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
       backgroundColor: AppColors.bg,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: IndexedStack(index: _index, children: _pages),
-          ),
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 10 + bottom,
-            child: PaperNav(
-              index: _index,
-              onSelect: (i) => setState(() => _index = i),
+      body: AppSafeArea(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: IndexedStack(index: _index, children: _pages),
             ),
-          ),
-        ],
+            Positioned(
+              left: 16,
+              right: 16,
+              bottom: 10,
+              child: PaperNav(
+                index: _index,
+                onSelect: (i) => setState(() => _index = i),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
