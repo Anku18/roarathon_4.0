@@ -43,7 +43,7 @@ class PaperNav extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: i == index
                               ? AppColors.coral
-                              : Colors.transparent,
+                              : AppColors.ink.withValues(alpha: 0.18),
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -54,7 +54,7 @@ class PaperNav extends StatelessWidget {
                           size: 10.5,
                           color: i == index
                               ? AppColors.ink
-                              : AppColors.muteSoft,
+                              : AppColors.ink.withValues(alpha: 0.38),
                         ),
                       ),
                     ],
