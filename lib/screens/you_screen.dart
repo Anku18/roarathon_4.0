@@ -110,7 +110,7 @@ class YouScreen extends StatelessWidget {
                   children: [
                     _StatChip(
                       k: 'STREAK',
-                      v: '${state.streak} days',
+                      v: '${state.streak} · ${formatEnIn(state.streakCoins)}',
                       color: AppColors.blush,
                       onTap: () => showStreakSheet(context),
                     ),
@@ -188,7 +188,7 @@ class YouScreen extends StatelessWidget {
                   item: Achievement(
                     mark: '${state.streak}',
                     name: 'Streak',
-                    sub: state.goldLine(),
+                    sub: '${formatEnIn(state.streakCoins)} coins',
                     earned: true,
                   ),
                   featured: true,

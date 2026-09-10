@@ -142,8 +142,19 @@ class AppState extends ChangeNotifier {
     claimedToday = true;
     streak += 1;
     ticks += seed.checkInCoins;
+    for (final m in seed.milestones) {
+      if (streak == m.requiredDays) ticks += m.bonusCoins;
+    }
     notifyListeners();
   }
+
+  int get streakCheckInCoins => streak * seed.checkInCoins;
+
+  int get streakBonusCoins => seed.milestones
+      .where((m) => streak >= m.requiredDays)
+      .fold(0, (sum, m) => sum + m.bonusCoins);
+
+  int get streakCoins => streakCheckInCoins + streakBonusCoins;
 
   void setLeaderboardTab(LeaderboardTab tab) {
     if (tab == leaderboardTab) return;

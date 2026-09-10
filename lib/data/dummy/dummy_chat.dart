@@ -1,4 +1,5 @@
 import '../../models/models.dart';
+import 'dummy_streak.dart';
 
 abstract final class DummyChat {
   static const greeting =
@@ -24,7 +25,7 @@ abstract final class DummyChat {
     CannedReply(
       keywords: ['streak', 'check in', 'check-in'],
       reply:
-          'Tap the fire in the top bar to check in. Miss a trading day and the count restarts at 1. Gold tier unlocks at 14 days in a row. Your current streak also lives on You → Achievements.',
+          'Tap the fire in the top bar to check in. Each trading-day check-in pays ${DummyStreak.checkInCoins} Shercoins. Week One at 7 days adds 100 more. Miss a day and the count restarts at 1. Gold tier unlocks at 14 days in a row.',
     ),
     CannedReply(
       keywords: ['refer', 'invite', 'friend', 'code'],

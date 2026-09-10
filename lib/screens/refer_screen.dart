@@ -55,7 +55,9 @@ class ReferScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 3),
                       Text(
-                        'A referral counts once your friend funds their account.',
+                        referrals
+                            ? 'A referral counts once your friend funds their account.'
+                            : 'Correct 8:45 calls pay ${DummyHome.dailyCall.payCorrect} Shercoins. Wrong costs nothing.',
                         style: AppTheme.font(size: 12.5, color: AppColors.mute),
                       ),
                     ],
@@ -290,7 +292,7 @@ class _InviteRow extends StatelessWidget {
     final tag = switch (invite.status) {
       InviteStatus.funded => '+${invite.coins}',
       InviteStatus.pending => 'Pending',
-      InviteStatus.sent => 'Sent',
+      InviteStatus.sent => 'Pending',
     };
     return PaperCard(
       radius: 18,

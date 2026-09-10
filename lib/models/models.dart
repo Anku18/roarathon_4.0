@@ -84,12 +84,14 @@ class StreakMilestone {
     required this.title,
     required this.subtitle,
     required this.requiredDays,
+    this.bonusCoins = 0,
   });
 
   final String dayLabel;
   final String title;
   final String subtitle;
   final int requiredDays;
+  final int bonusCoins;
 }
 
 class WeekDayDef {
