@@ -7,6 +7,7 @@ import '../theme/app_theme.dart';
 import '../theme/formatters.dart';
 import '../widgets/paper.dart';
 import 'ask_sher_screen.dart';
+import 'notifications_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -36,6 +37,53 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
+                    // ── Notification bell ──
+                    GestureDetector(
+                      onTap: () => showNotificationsSheet(context),
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            decoration: BoxDecoration(
+                              color: AppColors.cream,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppColors.lineStrong),
+                            ),
+                            child: const Icon(
+                              Icons.notifications_outlined,
+                              size: 18,
+                              color: AppColors.ink,
+                            ),
+                          ),
+                          if (state.unreadCount > 0)
+                            Positioned(
+                              right: -2,
+                              top: -2,
+                              child: Container(
+                                constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                                padding: const EdgeInsets.symmetric(horizontal: 4),
+                                decoration: const BoxDecoration(
+                                  color: AppColors.coral,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Text(
+                                  state.unreadCount > 9 ? '9+' : '${state.unreadCount}',
+                                  textAlign: TextAlign.center,
+                                  style: AppTheme.font(
+                                    size: 9,
+                                    weight: FontWeight.w800,
+                                    color: AppColors.cream,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    // ── Ticks pill ──
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
                       decoration: BoxDecoration(

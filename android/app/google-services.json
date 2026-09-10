@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "441462754050",
+    "project_id": "roarathon-4",
+    "storage_bucket": "roarathon-4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441462754050:android:9254c6478c160de7c3d01b",
+        "android_client_info": {
+          "package_name": "com.example.roarathon_4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJb1qZPR_wBvKHoFjQOijFsPb0QjnclPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

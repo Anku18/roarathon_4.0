@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../data/dummy/dummy.dart';
 import '../models/models.dart';
+import '../models/notification_model.dart';
 import 'session_store.dart';
 
 enum LeaderboardTab { referrals, accuracy }
@@ -21,6 +22,9 @@ class AppState extends ChangeNotifier {
   String? prediction; // UP | DOWN
   final List<String> shopDone = [];
   LeaderboardTab leaderboardTab = LeaderboardTab.referrals;
+  final List<AppNotification> notifications = [];
+
+  int get unreadCount => notifications.where((n) => !n.isRead).length;
   final List<ChatTurn> chat = [];
 
   DummySeed get seed {
@@ -41,6 +45,18 @@ class AppState extends ChangeNotifier {
       final account = DummyAuth.byClientId(clientId);
       if (account != null) {
         _applySeed(DummySeeds.byId(account.seedId));
+      }
+    }
+    // Restore saved notifications
+    final notifJson = await _store.loadNotifications();
+    if (notifJson != null) {
+      try {
+        final loaded = AppNotification.listFromJsonString(notifJson);
+        notifications
+          ..clear()
+          ..addAll(loaded);
+      } catch (_) {
+        // Corrupt data — ignore
       }
     }
     _ready = true;
@@ -66,6 +82,7 @@ class AppState extends ChangeNotifier {
     shopDone.clear();
     leaderboardTab = LeaderboardTab.referrals;
     chat.clear();
+    notifications.clear();
     await _store.clear();
     notifyListeners();
   }
@@ -137,5 +154,33 @@ class AppState extends ChangeNotifier {
     final left = goldAt - streak;
     if (left <= 0) return 'Gold tier unlocked';
     return left == 1 ? '1 day to Gold tier' : '$left days to Gold tier';
+  }
+
+  void addNotification(AppNotification notification) {
+    notifications.insert(0, notification);
+    // Keep only the latest 20
+    if (notifications.length > 20) {
+      notifications.removeRange(20, notifications.length);
+    }
+    _persistNotifications();
+    notifyListeners();
+  }
+
+  void markAllRead() {
+    for (final n in notifications) {
+      n.isRead = true;
+    }
+    _persistNotifications();
+    notifyListeners();
+  }
+
+  void dismissNotification(String id) {
+    notifications.removeWhere((n) => n.id == id);
+    _persistNotifications();
+    notifyListeners();
+  }
+
+  void _persistNotifications() {
+    _store.saveNotifications(AppNotification.listToJsonString(notifications));
   }
 }
