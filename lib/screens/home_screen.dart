@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        'Sharekhan',
+                        'Investo',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: AppTheme.font(
