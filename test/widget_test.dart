@@ -71,10 +71,6 @@ void main() {
     Finder nav(String label) =>
         find.descendant(of: find.byType(PaperNav), matching: find.text(label));
 
-    await tester.tap(nav('Markets'));
-    await tester.pumpAndSettle();
-    expect(find.text('Dummy watchlist'), findsOneWidget);
-
     await tester.tap(nav('Refer'));
     await tester.pumpAndSettle();
     expect(find.text('Leaderboard'), findsOneWidget);

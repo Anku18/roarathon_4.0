@@ -1,6 +1,6 @@
 import '../../models/models.dart';
 
-/// Dummy indices and watchlist. Edit here — Home and Markets both read this.
+/// Dummy indices and watchlist. Edit here — Home reads this.
 abstract final class DummyMarkets {
   static const subtitle =
       'Full markets board is coming. This is a dummy watchlist so the tab isn’t empty.';
