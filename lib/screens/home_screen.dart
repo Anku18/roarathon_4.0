@@ -144,7 +144,7 @@ class HomeScreen extends StatelessWidget {
         ),
         Positioned(
           right: 20,
-          bottom: 122,
+          bottom: 100,
           child: Material(
             color: AppColors.ink,
             borderRadius: BorderRadius.circular(AppRadii.pill),
