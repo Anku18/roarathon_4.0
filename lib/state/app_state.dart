@@ -19,7 +19,9 @@ class AppState extends ChangeNotifier {
   int streak = 0;
   bool claimedToday = false;
   List<bool> missionsDone = const [];
-  String? prediction; // UP | DOWN
+  String? callDraft; // UP | DOWN, before submit
+  String? prediction; // UP | DOWN, after submit
+  bool get callSubmitted => prediction != null;
   final List<String> shopDone = [];
   LeaderboardTab leaderboardTab = LeaderboardTab.referrals;
   final List<AppNotification> notifications = [];
@@ -78,6 +80,7 @@ class AppState extends ChangeNotifier {
     streak = 0;
     claimedToday = false;
     missionsDone = const [];
+    callDraft = null;
     prediction = null;
     shopDone.clear();
     leaderboardTab = LeaderboardTab.referrals;
@@ -93,6 +96,7 @@ class AppState extends ChangeNotifier {
     streak = seed.streak;
     claimedToday = seed.claimedToday;
     missionsDone = seed.missions.map((m) => m.doneByDefault).toList();
+    callDraft = null;
     prediction = null;
     shopDone.clear();
     leaderboardTab = LeaderboardTab.referrals;
@@ -101,9 +105,15 @@ class AppState extends ChangeNotifier {
       ..add(ChatTurn(fromUser: false, text: seed.chatGreeting));
   }
 
-  void pickCall(String direction) {
+  void selectCall(String direction) {
     if (prediction != null) return;
-    prediction = direction;
+    callDraft = direction;
+    notifyListeners();
+  }
+
+  void submitCall() {
+    if (prediction != null || callDraft == null) return;
+    prediction = callDraft;
     notifyListeners();
   }
 

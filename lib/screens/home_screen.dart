@@ -16,7 +16,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = AppScope.of(context);
     final seed = state.seed;
-    final pred = state.prediction;
 
     return Stack(
       children: [
@@ -147,74 +146,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              PaperCard(
-                radius: AppRadii.cardLg,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Kicker('8:45 ALERT', filled: true),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            pred == null ? 'Locks 9:15 · 12:40 left' : 'Locked · scores 3:30',
-                            textAlign: TextAlign.right,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTheme.font(size: 11.5, color: AppColors.mute),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      seed.dailyCall.question,
-                      style: AppTheme.font(
-                        size: 23,
-                        weight: FontWeight.w800,
-                        letterSpacing: -0.6,
-                        height: 1.2,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      seed.dailyCall.subtitle,
-                      style: AppTheme.font(size: 12.5, color: AppColors.mute),
-                    ),
-                    const SizedBox(height: 14),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _CallButton(
-                            label: 'Closes up',
-                            crowd: '${seed.dailyCall.upCrowdPercent}% called this',
-                            selected: pred == 'UP',
-                            onTap: pred == null ? () => state.pickCall('UP') : null,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: _CallButton(
-                            label: 'Closes down',
-                            crowd: '${seed.dailyCall.downCrowdPercent}% called this',
-                            selected: pred == 'DOWN',
-                            onTap: pred == null ? () => state.pickCall('DOWN') : null,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      pred == null
-                          ? 'One call a day. Correct pays ${seed.dailyCall.payCorrect} Shercoins, wrong costs nothing.'
-                          : 'Your call is in. You are on a 2-call run — one more correct and the streak bonus lands.',
-                      style: AppTheme.font(size: 11.5, color: AppColors.mute, height: 1.45),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
+              _DailyCallPanel(),
               Row(
                 children: [
                   Expanded(
@@ -329,16 +261,154 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+class _DailyCallPanel extends StatefulWidget {
+  const _DailyCallPanel();
+
+  @override
+  State<_DailyCallPanel> createState() => _DailyCallPanelState();
+}
+
+class _DailyCallPanelState extends State<_DailyCallPanel>
+    with SingleTickerProviderStateMixin {
+  static const _fade = Duration(milliseconds: 450);
+
+  late final AnimationController _controller;
+  late final Animation<double> _hide;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: _fade);
+    _hide = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onSubmit() async {
+    final state = AppScope.of(context);
+    if (state.callDraft == null || _controller.isAnimating || _controller.isCompleted) {
+      return;
+    }
+    await _controller.forward();
+    if (!mounted) return;
+    state.submitCall();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: AppColors.ink,
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 88),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Text(
+          "We'll know the result post market, at the 3:30 PM close.",
+          style: AppTheme.font(size: 13.5, weight: FontWeight.w700, color: AppColors.cream),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = AppScope.of(context);
+    final seed = state.seed;
+
+    if (state.callSubmitted) {
+      return const SizedBox.shrink();
+    }
+
+    return SizeTransition(
+      sizeFactor: Tween<double>(begin: 1, end: 0).animate(_hide),
+      axisAlignment: -1,
+      child: FadeTransition(
+        opacity: Tween<double>(begin: 1, end: 0).animate(_hide),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: PaperCard(
+            radius: AppRadii.cardLg,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Kicker('8:45 ALERT', filled: true),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Locks 9:15 · 12:40 left',
+                        textAlign: TextAlign.right,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTheme.font(size: 11.5, color: AppColors.mute),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  seed.dailyCall.question,
+                  style: AppTheme.font(
+                    size: 23,
+                    weight: FontWeight.w800,
+                    letterSpacing: -0.6,
+                    height: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  seed.dailyCall.subtitle,
+                  style: AppTheme.font(size: 12.5, color: AppColors.mute),
+                ),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _CallButton(
+                        label: 'Closes up',
+                        selected: state.callDraft == 'UP',
+                        onTap: () => state.selectCall('UP'),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: _CallButton(
+                        label: 'Closes down',
+                        selected: state.callDraft == 'DOWN',
+                        onTap: () => state.selectCall('DOWN'),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                PaperButton(
+                  label: 'Submit',
+                  onPressed: state.callDraft == null ? null : _onSubmit,
+                  height: 52,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'One call a day. Correct pays ${seed.dailyCall.payCorrect} Shercoins, wrong costs nothing.',
+                  style: AppTheme.font(size: 11.5, color: AppColors.mute, height: 1.45),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _CallButton extends StatelessWidget {
   const _CallButton({
     required this.label,
-    required this.crowd,
     required this.selected,
     required this.onTap,
   });
 
   final String label;
-  final String crowd;
   final bool selected;
   final VoidCallback? onTap;
 
@@ -352,32 +422,20 @@ class _CallButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         child: Container(
           constraints: const BoxConstraints(minHeight: 56),
+          alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: AppColors.lineHeavy),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: AppTheme.font(
-                  size: 14.5,
-                  weight: FontWeight.w800,
-                  letterSpacing: -0.2,
-                  color: selected ? AppColors.cream : AppColors.ink,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                crowd,
-                style: AppTheme.font(
-                  size: 11,
-                  color: (selected ? AppColors.cream : AppColors.ink).withValues(alpha: 0.7),
-                ),
-              ),
-            ],
+          child: Text(
+            label,
+            style: AppTheme.font(
+              size: 14.5,
+              weight: FontWeight.w800,
+              letterSpacing: -0.2,
+              color: selected ? AppColors.cream : AppColors.ink,
+            ),
           ),
         ),
       ),
