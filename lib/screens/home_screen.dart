@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/models.dart';
 import '../state/app_scope.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_radii.dart';
@@ -15,7 +16,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = AppScope.of(context);
-    final seed = state.seed;
 
     return Stack(
       children: [
@@ -111,114 +111,8 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 0, 4, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Kicker('TOTAL VALUE'),
-                    const SizedBox(height: 4),
-                    Text(
-                      seed.portfolio.totalValueLabel,
-                      style: AppTheme.font(
-                        size: 44,
-                        weight: FontWeight.w800,
-                        letterSpacing: -1.6,
-                        height: 1.04,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: AppColors.blush,
-                        borderRadius: BorderRadius.circular(AppRadii.pill),
-                      ),
-                      child: Text(
-                        seed.portfolio.todayChangeLabel,
-                        style: AppTheme.font(
-                          size: 13,
-                          weight: FontWeight.w800,
-                          color: AppColors.deep,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               _DailyCallPanel(),
-              Row(
-                children: [
-                  Expanded(
-                    child: PaperCard(
-                      radius: 22,
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Kicker('STREAK'),
-                          const SizedBox(height: 2),
-                          Text(
-                            '${state.streak}',
-                            style: AppTheme.font(
-                              size: 30,
-                              weight: FontWeight.w800,
-                              letterSpacing: -1.2,
-                              height: 1.1,
-                            ),
-                          ),
-                          Text(
-                            state.goldLine(),
-                            style: AppTheme.font(size: 11.5, color: AppColors.mute),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: PaperCard(
-                      radius: 22,
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Kicker('REFERRALS'),
-                          const SizedBox(height: 2),
-                          Text(
-                            '#${seed.profile.referralRank}',
-                            style: AppTheme.font(
-                              size: 30,
-                              weight: FontWeight.w800,
-                              letterSpacing: -1.2,
-                              height: 1.1,
-                            ),
-                          ),
-                          Text(
-                            '${seed.profile.fundedReferrals} funded · ${seed.profile.pendingReferrals} pending',
-                            style: AppTheme.font(size: 11.5, color: AppColors.mute),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              SectionHeader(
-                "Today's missions",
-                trailing: '${state.missionsDone.where((d) => d).length} of ${seed.missions.length} done',
-              ),
-              for (var i = 0; i < seed.missions.length; i++) ...[
-                _MissionTile(
-                  title: seed.missions[i].title,
-                  subtitle: seed.missions[i].subtitle,
-                  points: '+${seed.missions[i].points}',
-                  done: state.missionsDone[i],
-                  onTap: () => state.toggleMission(i),
-                ),
-                if (i != seed.missions.length - 1) const SizedBox(height: 10),
-              ],
+              const _HomeMarketBoard(),
             ],
           ),
         ),
@@ -257,6 +151,192 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _HomeMarketBoard extends StatefulWidget {
+  const _HomeMarketBoard();
+
+  @override
+  State<_HomeMarketBoard> createState() => _HomeMarketBoardState();
+}
+
+class _HomeMarketBoardState extends State<_HomeMarketBoard> {
+  bool _indices = true;
+
+  @override
+  Widget build(BuildContext context) {
+    final seed = AppScope.of(context).seed;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: _MarketTab(
+                label: 'Indices',
+                on: _indices,
+                onTap: () => setState(() => _indices = true),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _MarketTab(
+                label: 'Watchlist',
+                on: !_indices,
+                onTap: () => setState(() => _indices = false),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        if (_indices)
+          for (var i = 0; i < seed.indices.length; i++) ...[
+            _IndexRow(tick: seed.indices[i]),
+            if (i != seed.indices.length - 1) const SizedBox(height: 8),
+          ]
+        else
+          for (var i = 0; i < seed.watchlist.length; i++) ...[
+            _WatchRow(item: seed.watchlist[i]),
+            if (i != seed.watchlist.length - 1) const SizedBox(height: 8),
+          ],
+      ],
+    );
+  }
+}
+
+class _MarketTab extends StatelessWidget {
+  const _MarketTab({required this.label, required this.on, required this.onTap});
+
+  final String label;
+  final bool on;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 44,
+      child: OutlinedButton(
+        onPressed: onTap,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: on ? AppColors.ink : Colors.transparent,
+          foregroundColor: on ? AppColors.cream : AppColors.ink,
+          side: BorderSide(color: on ? AppColors.ink : AppColors.lineHeavy),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadii.pill),
+          ),
+        ),
+        child: Text(
+          label,
+          style: AppTheme.font(
+            size: 12.5,
+            weight: FontWeight.w800,
+            color: on ? AppColors.cream : AppColors.ink,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _IndexRow extends StatelessWidget {
+  const _IndexRow({required this.tick});
+
+  final IndexTick tick;
+
+  @override
+  Widget build(BuildContext context) {
+    final up = tick.up;
+    final color = up ? AppColors.deep : AppColors.mute;
+    return PaperCard(
+      radius: 20,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  tick.name,
+                  style: AppTheme.font(size: 14, weight: FontWeight.w800, letterSpacing: -0.2),
+                ),
+              ),
+              Text(
+                tick.changePts,
+                style: AppTheme.font(size: 13, weight: FontWeight.w800, color: color),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                tick.change,
+                style: AppTheme.font(size: 13, weight: FontWeight.w800, color: color),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            tick.value,
+            style: AppTheme.font(size: 22, weight: FontWeight.w800, letterSpacing: -0.6),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'H ${tick.high}  ·  L ${tick.low}',
+            style: AppTheme.font(size: 11.5, color: AppColors.mute),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _WatchRow extends StatelessWidget {
+  const _WatchRow({required this.item});
+
+  final Holding item;
+
+  @override
+  Widget build(BuildContext context) {
+    return PaperCard(
+      radius: 20,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.symbol,
+                  style: AppTheme.font(size: 14, weight: FontWeight.w800, letterSpacing: -0.2),
+                ),
+                Text(
+                  item.qtyLine,
+                  style: AppTheme.font(size: 11.5, color: AppColors.mute),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                item.value,
+                style: AppTheme.font(size: 14, weight: FontWeight.w800),
+              ),
+              Text(
+                item.change,
+                style: AppTheme.font(
+                  size: 12,
+                  weight: FontWeight.w800,
+                  color: item.up ? AppColors.deep : AppColors.mute,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -443,69 +523,3 @@ class _CallButton extends StatelessWidget {
   }
 }
 
-class _MissionTile extends StatelessWidget {
-  const _MissionTile({
-    required this.title,
-    required this.subtitle,
-    required this.points,
-    required this.done,
-    required this.onTap,
-  });
-
-  final String title;
-  final String subtitle;
-  final String points;
-  final bool done;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return PaperCard(
-      radius: 20,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      onTap: onTap,
-      child: Row(
-        children: [
-          Container(
-            width: 22,
-            height: 22,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: done ? AppColors.ink : Colors.transparent,
-              border: Border.all(
-                color: done ? AppColors.ink : AppColors.mute.withValues(alpha: 0.5),
-                width: 2,
-              ),
-            ),
-            child: done
-                ? const Icon(Icons.check, size: 12, color: AppColors.cream)
-                : null,
-          ),
-          const SizedBox(width: 13),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: AppTheme.font(
-                    size: 13.5,
-                    color: done ? AppColors.mute : AppColors.ink,
-                  ),
-                ),
-                Text(
-                  subtitle,
-                  style: AppTheme.font(size: 11, color: AppColors.mute),
-                ),
-              ],
-            ),
-          ),
-          Text(
-            points,
-            style: AppTheme.font(size: 12.5, weight: FontWeight.w800, color: AppColors.deep),
-          ),
-        ],
-      ),
-    );
-  }
-}

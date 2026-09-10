@@ -31,10 +31,25 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Where does NIFTY 50 close today?'), findsOneWidget);
+    expect(find.text('SENSEX'), findsWidgets);
+    expect(find.text('Indices'), findsOneWidget);
+
+    await tester.tap(find.text('Watchlist'));
+    await tester.pumpAndSettle();
+    expect(find.text('RELIANCE'), findsWidgets);
+
+    await tester.tap(find.text('Indices'));
+    await tester.pumpAndSettle();
 
     await tester.tap(find.text('Closes up'));
     await tester.pump();
-    expect(find.textContaining('Your call is in'), findsOneWidget);
+    await tester.tap(find.text('Submit'));
+    await tester.pumpAndSettle();
+    expect(find.text('Where does NIFTY 50 close today?'), findsNothing);
+    expect(
+      find.textContaining("We'll know the result post market"),
+      findsOneWidget,
+    );
 
     Finder nav(String label) =>
         find.descendant(of: find.byType(PaperNav), matching: find.text(label));

@@ -193,12 +193,18 @@ class IndexTick {
     required this.name,
     required this.value,
     required this.change,
+    required this.changePts,
+    required this.high,
+    required this.low,
     required this.up,
   });
 
   final String name;
   final String value;
   final String change;
+  final String changePts;
+  final String high;
+  final String low;
   final bool up;
 }
 

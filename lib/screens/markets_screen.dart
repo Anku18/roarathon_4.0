@@ -60,18 +60,18 @@ class MarketsScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        idx.value,
-                        style: AppTheme.font(size: 16, weight: FontWeight.w800, letterSpacing: -0.4),
-                      ),
-                      Text(
-                        idx.change,
-                        style: AppTheme.font(
-                          size: 12,
-                          weight: FontWeight.w800,
-                          color: idx.up ? AppColors.deep : AppColors.mute,
-                        ),
-                      ),
+          Text(
+            idx.value,
+            style: AppTheme.font(size: 16, weight: FontWeight.w800, letterSpacing: -0.4),
+          ),
+          Text(
+            '${idx.changePts}  ${idx.change}',
+            style: AppTheme.font(
+              size: 12,
+              weight: FontWeight.w800,
+              color: idx.up ? AppColors.deep : AppColors.mute,
+            ),
+          ),
                     ],
                   ),
                 );
