@@ -11,6 +11,7 @@ import '../widgets/coins_pill.dart';
 import '../widgets/net_bubble.dart';
 import '../widgets/paper.dart';
 import '../widgets/streak_sheet.dart';
+import 'closure_screen.dart';
 
 class YouScreen extends StatelessWidget {
   const YouScreen({super.key});
@@ -207,6 +208,21 @@ class YouScreen extends StatelessWidget {
                 size: 13.5,
                 weight: FontWeight.w800,
                 color: AppColors.deep,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const ClosureScreen()),
+              );
+            },
+            child: Text(
+              'Close Account',
+              style: AppTheme.font(
+                size: 13.5,
+                weight: FontWeight.w800,
+                color: AppColors.mute,
               ),
             ),
           ),

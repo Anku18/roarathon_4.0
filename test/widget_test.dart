@@ -31,7 +31,7 @@ void main() {
     await tester.tap(find.text('Continue'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Where does NIFTY 50 close today?'), findsOneWidget);
+    expect(find.text('Will NIFTY 50 close up or down today?'), findsOneWidget);
     expect(find.text('SENSEX'), findsWidgets);
     expect(find.text('Indices'), findsOneWidget);
 
@@ -44,11 +44,29 @@ void main() {
 
     await tester.tap(find.text('Closes up'));
     await tester.pump();
-    await tester.tap(find.text('Submit'));
+    await tester.tap(find.text('Lock answer'));
     await tester.pumpAndSettle();
-    expect(find.text('Where does NIFTY 50 close today?'), findsNothing);
+    expect(find.text('Will NIFTY 50 close up or down today?'), findsNothing);
     expect(
-      find.textContaining("We'll know the result post market"),
+      find.textContaining('Answer locked'),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.text('Watchlist'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('RELIANCE').first);
+    await tester.pumpAndSettle();
+    expect(find.text('Buy'), findsOneWidget);
+    await tester.tap(find.text('Buy'));
+    await tester.pump();
+    expect(find.text('Buy order placed'), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 1000));
+    await tester.pumpAndSettle();
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('coins-pill')),
+        matching: find.text('2,500'),
+      ),
       findsOneWidget,
     );
 
@@ -78,8 +96,9 @@ void main() {
     await tester.tap(nav('You'));
     await tester.pumpAndSettle();
     expect(find.text('Rohit Menon'), findsOneWidget);
-    expect(find.text('13 days'), findsOneWidget);
+    expect(find.text('13 · 620'), findsOneWidget);
     expect(find.text('Streak'), findsOneWidget);
     expect(find.text('Log out'), findsOneWidget);
+    expect(find.text('2,540'), findsOneWidget);
   });
 }

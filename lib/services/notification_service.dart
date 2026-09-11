@@ -24,7 +24,7 @@ class NotificationService {
   final _localNotifications = FlutterLocalNotificationsPlugin();
 
   static const _channelId = 'roarathon_notifications';
-  static const _channelName = 'Roarathon Alerts';
+  static const _channelName = 'Investo Alerts';
   static const _channelDesc = 'Market alerts, streak reminders & mission updates';
 
   String? _fcmToken;
@@ -160,7 +160,7 @@ class NotificationService {
 
     final appNotif = AppNotification(
       id: message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
-      title: notif.title ?? 'Roarathon',
+      title: notif.title ?? 'Investo',
       body: notif.body ?? '',
       type: type,
       timestamp: DateTime.now(),
@@ -177,7 +177,7 @@ class NotificationService {
       NotificationType.streak: ('🔥 Streak Reminder', "Don't break your streak! Check in today."),
       NotificationType.mission: ('🎯 Mission Completed', 'You earned 50 Sherpoints for completing a mission.'),
       NotificationType.referral: ('👥 Referral Update', 'Rahul just funded his account. You earned a bonus!'),
-      NotificationType.general: ('🔔 Roarathon', 'Welcome to Roarathon! Start earning today.'),
+      NotificationType.general: ('🔔 Investo', 'Welcome to Investo! Start earning today.'),
     };
     final (title, body) = demos[type]!;
     state.addNotification(AppNotification(

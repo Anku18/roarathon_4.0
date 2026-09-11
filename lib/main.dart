@@ -68,7 +68,7 @@ class SharekhanApp extends StatelessWidget {
     return AppScope(
       state: state,
       child: MaterialApp(
-        title: 'Sharekhan Rewards',
+        title: 'Investo',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light(),
         builder: (context, child) {
