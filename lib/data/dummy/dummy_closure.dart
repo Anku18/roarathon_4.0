@@ -32,7 +32,7 @@ abstract final class DummyClosure {
   static const title = 'Close broking account';
   static const kicker = 'BEFORE YOU CLOSE';
   static const intro =
-      'Pick a reason from the list. We log the exact issue and your Relationship Manager calls you. There is no blank box and no brokerage change on this screen.';
+      'Tell us why you want to close. Your Relationship Manager will call you on your registered number.';
 
   static const stillCloseLabel = 'Still close account';
   static const keepLabel = 'Okay';

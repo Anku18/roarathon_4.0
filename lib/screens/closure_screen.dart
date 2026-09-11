@@ -132,16 +132,16 @@ class _ClosureScreenState extends State<ClosureScreen> {
         body: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
           children: [
-            const Kicker(DummyClosure.kicker),
-            const SizedBox(height: 8),
-            Text(
-              DummyClosure.intro,
-              style: AppTheme.font(
-                size: 13.5,
-                color: AppColors.mute,
-                height: 1.45,
-              ),
-            ),
+            // const Kicker(DummyClosure.kicker),
+            // const SizedBox(height: 8),
+            // Text(
+            //   DummyClosure.intro,
+            //   style: AppTheme.font(
+            //     size: 13.5,
+            //     color: AppColors.mute,
+            //     height: 1.45,
+            //   ),
+            // ),
             if (_path.isNotEmpty) ...[
               const SizedBox(height: 14),
               Wrap(
