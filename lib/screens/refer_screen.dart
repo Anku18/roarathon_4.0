@@ -57,7 +57,7 @@ class ReferScreen extends StatelessWidget {
                       Text(
                         referrals
                             ? 'A referral counts once your friend funds their account.'
-                            : 'Correct 8:45 calls pay ${DummyHome.dailyCall.payCorrect} Shercoins. Wrong costs nothing.',
+                            : 'A right pre-market quiz answer pays ${DummyHome.dailyCall.payCorrect} Sherpoints. Wrong costs nothing.',
                         style: AppTheme.font(size: 12.5, color: AppColors.mute),
                       ),
                     ],
@@ -83,7 +83,7 @@ class ReferScreen extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: _TabPill(
-                  label: '8:45 accuracy',
+                  label: 'Quiz accuracy',
                   on: !referrals,
                   onTap: () => state.setLeaderboardTab(LeaderboardTab.accuracy),
                 ),
@@ -119,7 +119,7 @@ class ReferScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  '${DummyReferrals.bountyCoins} Shercoins each, on funding',
+                  '${DummyReferrals.bountyCoins} Sherpoints each, on funding',
                   style: AppTheme.font(
                     size: 19,
                     weight: FontWeight.w800,

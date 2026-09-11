@@ -18,7 +18,7 @@ abstract final class DummyStreak {
     StreakMilestone(
       dayLabel: '07',
       title: 'Week One',
-      subtitle: '100 Shercoins + Consistent badge',
+      subtitle: '100 Sherpoints + Consistent badge',
       requiredDays: 7,
       bonusCoins: 100,
     ),
@@ -31,14 +31,14 @@ abstract final class DummyStreak {
     StreakMilestone(
       dayLabel: '30',
       title: 'Month Maker',
-      subtitle: '750 Shercoins + priority support',
+      subtitle: '750 Sherpoints + priority support',
       requiredDays: 30,
       bonusCoins: 750,
     ),
     StreakMilestone(
       dayLabel: '90',
       title: 'Quarter Club',
-      subtitle: '2,500 Shercoins + fee-free SIP for a year',
+      subtitle: '2,500 Sherpoints + fee-free SIP for a year',
       requiredDays: 90,
       bonusCoins: 2500,
     ),

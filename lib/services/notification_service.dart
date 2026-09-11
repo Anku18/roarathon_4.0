@@ -173,9 +173,9 @@ class NotificationService {
   /// Inject a local/demo notification (used for testing without a real FCM push).
   void injectDemoNotification(AppState state, {NotificationType type = NotificationType.general}) {
     final demos = {
-      NotificationType.marketAlert: ('📈 Market Alert', 'NIFTY is up 1.2% — check your daily call!'),
+      NotificationType.marketAlert: ('📈 Market Alert', 'NIFTY is up 1.2% — take the pre-market quiz!'),
       NotificationType.streak: ('🔥 Streak Reminder', "Don't break your streak! Check in today."),
-      NotificationType.mission: ('🎯 Mission Completed', 'You earned 50 Shercoins for completing a mission.'),
+      NotificationType.mission: ('🎯 Mission Completed', 'You earned 50 Sherpoints for completing a mission.'),
       NotificationType.referral: ('👥 Referral Update', 'Rahul just funded his account. You earned a bonus!'),
       NotificationType.general: ('🔔 Roarathon', 'Welcome to Roarathon! Start earning today.'),
     };

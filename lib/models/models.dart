@@ -50,15 +50,11 @@ class DailyCall {
   const DailyCall({
     required this.question,
     required this.subtitle,
-    required this.upCrowdPercent,
-    required this.downCrowdPercent,
     required this.payCorrect,
   });
 
   final String question;
   final String subtitle;
-  final int upCrowdPercent;
-  final int downCrowdPercent;
   final int payCorrect;
 }
 

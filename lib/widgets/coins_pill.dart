@@ -54,7 +54,7 @@ class _AnimatedCoinCountState extends State<AnimatedCoinCount> {
   }
 }
 
-/// Header Shercoin count that rolls and pops when [ticks] changes.
+/// Header Sherpoint count that rolls and pops when [ticks] changes.
 class CoinsPill extends StatefulWidget {
   const CoinsPill({super.key, required this.ticks});
 

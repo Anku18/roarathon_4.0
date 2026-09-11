@@ -1,6 +1,6 @@
 import '../../models/models.dart';
 
-/// Home / portfolio / 8:45 call / missions for the Rohit prototype user.
+/// Home / portfolio / pre-market quiz / missions for the Rohit prototype user.
 abstract final class DummyHome {
   static const portfolio = PortfolioSnapshot(
     totalValueLabel: '₹4,82,310',
@@ -9,10 +9,8 @@ abstract final class DummyHome {
   );
 
   static const dailyCall = DailyCall(
-    question: 'Where does NIFTY 50 close today?',
-    subtitle: 'Prev close 24,812.40 · SGX cue +41',
-    upCrowdPercent: 62,
-    downCrowdPercent: 38,
+    question: 'Will NIFTY 50 close up or down today?',
+    subtitle: 'Question 1 of 1 · Answer before 9:15 AM',
     payCorrect: 50,
   );
 

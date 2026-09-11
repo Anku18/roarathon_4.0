@@ -74,7 +74,7 @@ class YouScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Kicker('SHERCOIN BALANCE'),
+                const Kicker('SHERPOINT BALANCE'),
                 const SizedBox(height: 2),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -117,7 +117,7 @@ class YouScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     const _StatChip(
-                      k: '8:45 CALLS',
+                      k: 'QUIZ',
                       v: DummyRewards.accuracyLabel,
                       color: AppColors.sand,
                     ),
@@ -144,7 +144,7 @@ class YouScreen extends StatelessWidget {
             if (i != seed.shop.length - 1) const SizedBox(height: 9),
           ],
           const SizedBox(height: 16),
-          SectionHeader('8:45 call record', trailing: seed.callRecordSummary),
+          SectionHeader('Pre-market quiz', trailing: seed.callRecordSummary),
           Row(
             children: [
               for (var i = 0; i < seed.callRecord.length; i++)
@@ -164,7 +164,7 @@ class YouScreen extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            '${state.prediction == null ? 'Today is unscored until you call it from the 8:45 alert.' : "Today's call is in and shows as a pending square."} Scored at the 3:30 PM close. A call is a game entry, not investment advice, and never places an order.',
+            '${state.prediction == null ? 'Today is unscored until you take the pre-market quiz on Home.' : "Today's answer is in and shows as a pending square."} Scored at the 3:30 PM close. The quiz is a game, not investment advice, and never places an order.',
             style: AppTheme.font(
               size: 11.5,
               color: AppColors.mute,
@@ -189,7 +189,7 @@ class YouScreen extends StatelessWidget {
                   item: Achievement(
                     mark: '${state.streak}',
                     name: 'Streak',
-                    sub: '${formatEnIn(state.streakCoins)} coins',
+                    sub: '${formatEnIn(state.streakCoins)} points',
                     earned: true,
                   ),
                   featured: true,
@@ -255,7 +255,7 @@ class YouScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Spends ${formatEnIn(item.cost)} Shercoins. ${item.subtitle}. The voucher lands in your inbox within an hour and is valid for 90 days.',
+                'Spends ${formatEnIn(item.cost)} Sherpoints. ${item.subtitle}. The voucher lands in your inbox within an hour and is valid for 90 days.',
                 style: AppTheme.font(
                   size: 13,
                   color: AppColors.muteSoft,
@@ -267,7 +267,7 @@ class YouScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: PaperButton(
-                      label: 'REDEEM ${formatEnIn(item.cost)} COINS',
+                      label: 'REDEEM ${formatEnIn(item.cost)} POINTS',
                       onPressed: () {
                         state.redeem(item);
                         Navigator.pop(ctx);

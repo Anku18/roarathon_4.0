@@ -107,7 +107,7 @@ class _TradeSheetState extends State<_TradeSheet> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${item.symbol} · +${DummyMarkets.tradeCoins} Shercoins',
+                      '${item.symbol} · +${DummyMarkets.tradeCoins} Sherpoints',
                       style: AppTheme.font(size: 13.5, color: AppColors.mute),
                     ),
                   ],

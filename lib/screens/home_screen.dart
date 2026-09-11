@@ -48,6 +48,8 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(width: 8),
                     const StreakChip(),
                     const SizedBox(width: 6),
+                    CoinsPill(ticks: state.ticks),
+                    const SizedBox(width: 4),
                     // ── Notification bell ──
                     GestureDetector(
                       onTap: () => showNotificationsSheet(context),
@@ -101,8 +103,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 6),
-                    CoinsPill(ticks: state.ticks),
-                    const SizedBox(width: 4),
                     const NetBubble(),
                   ],
                 ),
@@ -460,7 +460,7 @@ class _DailyCallPanelState extends State<_DailyCallPanel>
         margin: const EdgeInsets.fromLTRB(16, 0, 16, 88),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Text(
-          "We'll know the result post market, at the 3:30 PM close.",
+          'Answer locked. We score it at the 3:30 PM close.',
           style: AppTheme.font(
             size: 13.5,
             weight: FontWeight.w700,
@@ -494,11 +494,11 @@ class _DailyCallPanelState extends State<_DailyCallPanel>
               children: [
                 Row(
                   children: [
-                    const Kicker('8:45 ALERT', filled: true),
+                    const Kicker('PRE-MARKET QUIZ', filled: true),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Locks 9:15 · 12:40 left',
+                        '+${seed.dailyCall.payCorrect} Sherpoints',
                         textAlign: TextAlign.right,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -507,34 +507,41 @@ class _DailyCallPanelState extends State<_DailyCallPanel>
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 14),
+                Text(
+                  seed.dailyCall.subtitle,
+                  style: AppTheme.font(
+                    size: 12,
+                    weight: FontWeight.w700,
+                    color: AppColors.mute,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+                const SizedBox(height: 6),
                 Text(
                   seed.dailyCall.question,
                   style: AppTheme.font(
-                    size: 23,
+                    size: 22,
                     weight: FontWeight.w800,
-                    letterSpacing: -0.6,
-                    height: 1.2,
+                    letterSpacing: -0.5,
+                    height: 1.25,
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  seed.dailyCall.subtitle,
-                  style: AppTheme.font(size: 12.5, color: AppColors.mute),
                 ),
                 const SizedBox(height: 14),
                 Row(
                   children: [
                     Expanded(
-                      child: _CallButton(
+                      child: _QuizOption(
+                        mark: 'A',
                         label: 'Closes up',
                         selected: state.callDraft == 'UP',
                         onTap: () => state.selectCall('UP'),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 8),
                     Expanded(
-                      child: _CallButton(
+                      child: _QuizOption(
+                        mark: 'B',
                         label: 'Closes down',
                         selected: state.callDraft == 'DOWN',
                         onTap: () => state.selectCall('DOWN'),
@@ -542,15 +549,15 @@ class _DailyCallPanelState extends State<_DailyCallPanel>
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 14),
                 PaperButton(
-                  label: 'Submit',
+                  label: 'Lock answer',
                   onPressed: state.callDraft == null ? null : _onSubmit,
                   height: 52,
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'One call a day. Correct pays ${seed.dailyCall.payCorrect} Shercoins, wrong costs nothing.',
+                  'One question before the open. Right answer pays ${seed.dailyCall.payCorrect} Sherpoints. Wrong costs nothing.',
                   style: AppTheme.font(
                     size: 11.5,
                     color: AppColors.mute,
@@ -566,41 +573,78 @@ class _DailyCallPanelState extends State<_DailyCallPanel>
   }
 }
 
-class _CallButton extends StatelessWidget {
-  const _CallButton({
+class _QuizOption extends StatelessWidget {
+  const _QuizOption({
+    required this.mark,
     required this.label,
     required this.selected,
     required this.onTap,
   });
 
+  final String mark;
   final String label;
   final bool selected;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: selected ? AppColors.ink : AppColors.cream,
-      borderRadius: BorderRadius.circular(18),
+      color: selected ? AppColors.ink : AppColors.bg,
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
-          constraints: const BoxConstraints(minHeight: 56),
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 11),
+          constraints: const BoxConstraints(minHeight: 54),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: AppColors.lineHeavy),
-          ),
-          child: Text(
-            label,
-            style: AppTheme.font(
-              size: 14.5,
-              weight: FontWeight.w800,
-              letterSpacing: -0.2,
-              color: selected ? AppColors.cream : AppColors.ink,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: selected ? AppColors.ink : AppColors.lineHeavy,
             ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 26,
+                height: 26,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: selected ? AppColors.cream : Colors.transparent,
+                  border: selected
+                      ? null
+                      : Border.all(color: AppColors.lineHeavy),
+                ),
+                child: selected
+                    ? const Icon(
+                        Icons.check_rounded,
+                        size: 16,
+                        color: AppColors.ink,
+                      )
+                    : Text(
+                        mark,
+                        style: AppTheme.font(
+                          size: 12,
+                          weight: FontWeight.w800,
+                        ),
+                      ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTheme.font(
+                    size: 13.5,
+                    weight: FontWeight.w800,
+                    letterSpacing: -0.2,
+                    color: selected ? AppColors.cream : AppColors.ink,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

@@ -30,7 +30,7 @@ abstract final class DummyReferrals {
       name: 'Ananya Rao',
       initials: 'AR',
       metric: '11 funded',
-      coins: '5,500 coins',
+      coins: '5,500 points',
       sub: 'Recruiter tier',
     ),
     LeaderboardRow(
@@ -38,7 +38,7 @@ abstract final class DummyReferrals {
       name: 'Kabir Shah',
       initials: 'KS',
       metric: '8 funded',
-      coins: '4,000 coins',
+      coins: '4,000 points',
       sub: 'Recruiter tier',
     ),
     LeaderboardRow(
@@ -46,7 +46,7 @@ abstract final class DummyReferrals {
       name: 'Meera Iyer',
       initials: 'MI',
       metric: '7 funded',
-      coins: '3,500 coins',
+      coins: '3,500 points',
       sub: 'Recruiter tier',
     ),
     LeaderboardRow(
@@ -54,7 +54,7 @@ abstract final class DummyReferrals {
       name: 'Devansh Patel',
       initials: 'DP',
       metric: '5 funded',
-      coins: '2,500 coins',
+      coins: '2,500 points',
       sub: 'Recruiter tier',
     ),
     LeaderboardRow(
@@ -62,7 +62,7 @@ abstract final class DummyReferrals {
       name: 'You',
       initials: 'RM',
       metric: '4 funded',
-      coins: '2,000 coins',
+      coins: '2,000 points',
       sub: '1 to Recruiter',
       isYou: true,
     ),
@@ -71,19 +71,19 @@ abstract final class DummyReferrals {
       name: 'Nikhil Verma',
       initials: 'NV',
       metric: '4 funded',
-      coins: '2,000 coins',
+      coins: '2,000 points',
       sub: '1 to Recruiter',
     ),
   ];
 
-  /// Coins = correct calls × 50, same payout as the 8:45 alert.
+  /// Points = correct quiz answers × 50, same payout as the pre-market quiz.
   static const accuracyBoard = <LeaderboardRow>[
     LeaderboardRow(
       rank: '01',
       name: 'Meera Iyer',
       initials: 'MI',
       metric: '84% · 50 calls',
-      coins: '2,100 coins',
+      coins: '2,100 points',
       sub: '42 correct · Since June',
     ),
     LeaderboardRow(
@@ -91,7 +91,7 @@ abstract final class DummyReferrals {
       name: 'streaksaint',
       initials: 'SS',
       metric: '81% · 96 calls',
-      coins: '3,900 coins',
+      coins: '3,900 points',
       sub: '78 correct · Since June',
     ),
     LeaderboardRow(
@@ -99,7 +99,7 @@ abstract final class DummyReferrals {
       name: 'Kabir Shah',
       initials: 'KS',
       metric: '77% · 39 calls',
-      coins: '1,500 coins',
+      coins: '1,500 points',
       sub: '30 correct · Since June',
     ),
     LeaderboardRow(
@@ -107,7 +107,7 @@ abstract final class DummyReferrals {
       name: 'You',
       initials: 'RM',
       metric: '69% · 26 calls',
-      coins: '900 coins',
+      coins: '900 points',
       sub: '18 correct · Since June',
       isYou: true,
     ),
@@ -116,7 +116,7 @@ abstract final class DummyReferrals {
       name: 'Ananya Rao',
       initials: 'AR',
       metric: '68% · 50 calls',
-      coins: '1,700 coins',
+      coins: '1,700 points',
       sub: '34 correct · Since June',
     ),
     LeaderboardRow(
@@ -124,7 +124,7 @@ abstract final class DummyReferrals {
       name: 'chartwala',
       initials: 'CW',
       metric: '64% · 25 calls',
-      coins: '800 coins',
+      coins: '800 points',
       sub: '16 correct · Since June',
     ),
   ];

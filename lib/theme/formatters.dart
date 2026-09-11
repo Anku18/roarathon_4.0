@@ -1,4 +1,4 @@
-/// Indian grouping for coin / rank numbers (2,480 · 4,82,310).
+/// Indian grouping for point / rank numbers (2,480 · 4,82,310).
 String formatEnIn(int n) {
   final negative = n < 0;
   final digits = n.abs().toString();

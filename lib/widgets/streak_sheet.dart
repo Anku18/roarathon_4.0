@@ -134,7 +134,7 @@ class StreakSheet extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${formatEnIn(state.streakCoins)} Shercoins · +${seed.checkInCoins} per check-in',
+                      '${formatEnIn(state.streakCoins)} Sherpoints · +${seed.checkInCoins} per check-in',
                       style: AppTheme.font(size: 12.5, color: AppColors.mute),
                     ),
                     Text(
@@ -172,13 +172,13 @@ class StreakSheet extends StatelessWidget {
             label: state.claimedToday
                 ? 'Checked in today'
                 : 'Check in for today',
-            trailing: '+${seed.checkInCoins} coins',
+            trailing: '+${seed.checkInCoins} points',
             primary: !state.claimedToday,
             onPressed: state.claimedToday ? null : state.checkIn,
           ),
           const SizedBox(height: 10),
           Text(
-            'A check-in counts on a trading day and pays ${seed.checkInCoins} Shercoins. Milestone bonuses stack on top. Miss a day and the streak restarts at 1.',
+            'A check-in counts on a trading day and pays ${seed.checkInCoins} Sherpoints. Milestone bonuses stack on top. Miss a day and the streak restarts at 1.',
             style: AppTheme.font(
               size: 11.5,
               color: AppColors.mute,
